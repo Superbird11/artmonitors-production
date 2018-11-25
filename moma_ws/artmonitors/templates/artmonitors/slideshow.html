@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang=en">
+<head>
+	<title>MOMA Slideshow</title>
+    {% load static %}
+	<link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+	<link href="{% static 'artmonitors/slideshow_stylesheet.css' %}" rel="stylesheet" type="text/css" >
+    <script type="text/javascript">
+        var django_raw = "{{ work_list }}".replace(/&quot;/g,"\"");
+        var django_inputs = JSON.parse(django_raw)
+    </script>
+
+    <script src="{% static 'artmonitors/slideshow_code.js' %}"></script>
+</head>
+<body>
+	<div id="slideDiv">
+		<img id="slide1" class="slide" />
+		<img id="slide2" class="slide" />
+		<img id="slide3" class="slide" />
+	</div>
+	<div id="title">
+		<table id="descTable" class="titleTable" >
+			<tr>
+				<td id="workNameTD" class="workNameTDC" >
+					<div id="workName">
+						[Modern Art Slideshow will start momentarily]
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="fullscreen">
+		<button id="fullscreenButton" class="fsButton" type="button" onclick="goFullscreen();">Go Fullscreen</button>
+	</div>
+	<script>
+		initSlideshow();
+	</script>
+</body>
+</html>

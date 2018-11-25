@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        {% load static %}
+		<link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+		<link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+		<meta http-equiv="Content-type" content="text/html;charset=utf-8">
+		<title>About - Monitors of Modern Art</title>
+	</head>
+	<body>
+		<div id="header">Monitors of Modern Art</div>
+		<div id="container">
+			<div id="menu">
+				{% include 'artmonitors/menu.html' %}
+			</div>
+			<div id="content">
+				<div class="puretext">
+				<h1>Welcome to Monitors of Modern Art!</h1><br>
+					<p class="indent">We of MOMA are pleased to welcome you to this gallery of colorful and
+					inventive modern art. MOMA stands for equality among art – we believe
+					that all types of art are important and unique, and nothing should be
+					denied the privilege of being called "art" just because it happens to
+					be too "unique" or "different" from what traditionally makes up the
+					medium. At MOMA, we present our own art, created in a unique style and
+					attempting to dutifully represent the variety of the medium in a perhaps
+					unconventional way, and we hope you will enjoy browsing our collection.</p>
+					<p class="indent">We do our best to update our collection at least once every week, usually on Monday, with
+					a new piece of Modern Art.</p>
+				<h2>How our art is made</h2><br>
+					<p class="indent">We at MOMA appreciate having
+                    <a href="http://tvtropes.org/pmwiki/pmwiki.php/Main/FunWithAcronyms">fun with acronyms</a>
+					and the title of our gallery is the foremost example. Indeed, the art
+					displayed here is made from cracked monitor screens, hooked up to a
+					testing program which displays a flat primary-color image. Photographs
+					are taken and carefully edited to produce an artistic image that we and
+					our viewers will enjoy looking at, and perhaps with complexities yet
+					to be discovered and contemplated.</p><br>
+				<h2>On collection titles</h2><br>
+					<p class="indent">Our various collections are also given acronym titles, such as
+					"OMA", "MAAT", "ROMA", and more. Some of these are meant to satire
+					other significant titles with the same initials, but others are simply
+					abbreviations. All are abbreviations for some title, and most of the
+					time we attempt to make these titles representative of the contents of
+					their collections. If you'd like to submit any suggestions, feel free
+					to <a href="{% url 'artmonitors:view_contact' %}">contact us</a>!</p>
+
+				<h2>Special Thanks</h2><br>
+					<p class="indent">In particular, we would like to extend thanks to
+                    <a href="http://www.kramden.org">the Kramden Institute</a>, without
+                    which this project would not exist.</p>
+
+				<h2>About The Curator</h2><br>
+					<p class="indent">I (the curator) am currently a computer science
+					student at university. If you're trying to find any of the
+					miscellaneous personal projects I've hosted on this website,
+                    <a href="{% url 'personal:index' %}">click here</a>.</p>
+
+
+				</div>
+			</div>
+			<div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+		</div>
+	</body>
+</html>

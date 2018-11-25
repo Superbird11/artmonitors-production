@@ -1,0 +1,27 @@
+# venv necessities and pycharm files
+bin
+include
+lib
+pyvenv.cfg
+pip-selfcheck.json
+.idea
+venv
+
+# python files
+**/__pycache__
+**/*.pyc
+
+# django migrations
+moma_ws/artmonitors/migrations/*
+moma_ws/personal/migrations/*
+
+# raw data - should not be committed, can be recreated on a platform-by-platform basis
+moma_ws/db.sqlite
+moma_ws/static/collections.csv
+moma_ws/static/works.csv
+moma_ws/static/media
+
+# security/encryption-based data.
+# The GPG file can be symmetrically decrypted, and then unzipped to get the desired info
+moma_ws/artmonitors/keys
+moma_ws/artmonitors/keys.zip

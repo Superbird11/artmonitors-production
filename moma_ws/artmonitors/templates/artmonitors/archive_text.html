@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+    <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Archive - Monitors of Modern Art</title>
+</head>
+<body>
+<div id="header">Monitors of Modern Art</div>
+<div id="container">
+    <div id="menu">
+        {% include 'artmonitors/menu.html' %}
+    </div>
+    <div id="content">
+        <div class="puretext">
+            <h1><u>Text-Only Archive</u></h1>
+            <center>
+                <p class="puretext">This archive displays the names of every work ever published on this website, in order of most recent. Only
+                the name of each work is shown, and so this archive is intended for when you just can't quite remember which
+                collection a work was in. If you want to see a catalogue of images instead (rather than just the names), we
+                recommend checking out <a href="{% url 'artmonitors:view_full_archive' %}">the version of the archive that
+                contains thumbnail images</a> (warning: this may consume a lot of your bandwidth), or browse our <a
+                            href="{% url 'artmonitors:view_all_collections' %}">collection pages</a> instead.</p>
+            </center>
+        </div>
+        <div class="post">
+            <center>
+                <table style="width=100%;">
+                    {% for group in work_groups %}
+                    <tr>
+                        {% for work in group %}
+                        <td>
+                            <a href="{% url 'artmonitors:view_work' coll_abbrev=work.collection.abbrev work_name=work.pagename %}">
+                                {{ work.name }}
+                            </a>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </center>
+        </div>
+    </div>
+    <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+</div>
+</body>
+</html>

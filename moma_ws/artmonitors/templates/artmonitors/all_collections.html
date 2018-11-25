@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+    <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Collections - Monitors of Modern Art</title>
+</head>
+<body>
+<div id="header">Monitors of Modern Art</div>
+<div id="container">
+    <div id="menu">
+        {% include 'artmonitors/menu.html' %}
+    </div>
+    <div id="content">
+        <div class="post">
+            <h1>View collection:</h1><br>
+            <ol class="columns">
+                {% for coll in collections %}
+                {% if coll.id|floatformat:"1" == coll.id|floatformat:"-1" %}
+                <li value="{{ coll.id|floatformat }}" class="half">
+                    <a href="{% url 'artmonitors:view_collection' coll_abbrev=coll.abbrev %}">
+                        {{ coll.abbrev|upper }} - {{ coll.name }}
+                    </a>
+                </li>
+                {% else %}
+                <li value="{{ coll.id|floatformat }}">
+                    <a href="{% url 'artmonitors:view_collection' coll_abbrev=coll.abbrev %}">
+                        {{ coll.abbrev|upper }} - {{ coll.name }}
+                    </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+</div>
+</body>
+</html>

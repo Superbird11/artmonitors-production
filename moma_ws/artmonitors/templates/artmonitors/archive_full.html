@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+    <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Archive - Monitors of Modern Art</title>
+</head>
+<body>
+<div id="header">Monitors of Modern Art</div>
+<div id="container">
+    <div id="menu">
+        {% include 'artmonitors/menu.html' %}
+    </div>
+    <div id="content">
+        <div class="puretext">
+            <h1><u>Full Image Archive</u></h1>
+            <center>
+                <p class="puretext">This archive displays thumbnail images for every work ever published on this website, in order of most
+                recent, along with
+                those works' names. However, even using only thumbnails, this is a very high-bandwidth page; if you
+                only need to see the names of these works, feel free to visit <a
+                    href="{% url 'artmonitors:view_archive' %}">
+                our text-only archive</a>, or individually browse our <a
+                    href="{% url 'artmonitors:view_all_collections' %}">
+                        collections</a> to see less images at once.</p>
+            </center>
+        </div>
+        <div class="post">
+            <br>
+            <center>
+                <table style="width=100%;">
+                    {% for group in work_groups %}
+                    <tr>
+                        {% for work in group %}
+                        <td>
+                            <a href="{% url 'artmonitors:view_work' coll_abbrev=work.collection.abbrev work_name=work.pagename %}">
+                                <img src="{% get_media_prefix %}/{{ work.thumbnail }}"><br>
+                                <p>{{ work.name }}</p>
+                            </a>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </center>
+        </div>
+    </div>
+    <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+</div>
+</body>
+</html>

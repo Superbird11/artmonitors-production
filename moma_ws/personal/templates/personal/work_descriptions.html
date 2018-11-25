@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+    <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Non-MOMA Projects</title>
+</head>
+<body>
+    <div id="header">Monitors of Modern Art</div>
+    <div id="container">
+        <div id="menu">
+            {% include 'artmonitors/menu.html' %}
+        </div>
+        <div id="content">
+            <div class="puretext">
+                <p class="centeredText">You've stumbled upon a list of my Non-MOMA projects! These have no relation to
+                    Monitors of Modern Art, and the reason they're stored on this website is principally because I have
+                    the website anyway so I might as well use it for this and save the money of buying another.</p><br>
+                <p class="centeredText">Thank you, and please enjoy!</p>
+            </div>
+            {% for project in featured_projects %}
+            <div class="puretext">
+		    <!-- <h1>{{ project.name }}</h1> -->
+                {% if project.description %}
+                    <p>{{ project.description|safe }}</p>
+                {% endif %}
+                <p><a href="{% url 'personal:view_file' name=project.name %}">Click here to view this project.</a></p>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+    </div>
+</body>
+</html>

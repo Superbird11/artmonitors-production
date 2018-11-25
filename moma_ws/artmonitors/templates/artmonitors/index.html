@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+    <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Monitors of Modern Art</title>
+    <meta name="Description"
+          content="An art gallery featuring all sorts of unique and colorful abstract art, compiled here for your viewing pleasure.">
+    <script src="{% static 'artmonitors/set_height.js' %}"></script>
+    <script>
+        window.addEventListener("resize", setGoodHeightForAll)
+    </script>
+</head>
+<body>
+<div id="header">Monitors of Modern Art</div>
+<div id="container">
+    <div id="menu">
+        {% include 'artmonitors/menu.html' %}
+    </div>
+    <div id="content">
+        <div class="post">
+            <p class="centeredText">Hello, and welcome to Monitors of Modern Art!</p>
+            <p class="centeredText">You can learn more about MOMA <a href="{% url 'artmonitors:view_about' %}">here</a>,
+                browse our various <a href="{% url 'artmonitors:view_all_collections' %}">collections</a>, experience an
+                endless <a href="{% url 'artmonitors:slideshow' %}">slideshow</a> of our works, or look below for some
+                highlights of the gallery's best works.</p>
+            <br>
+            <p class="centeredText">(Warning: This site is not for mobile users browsing on data. Our images are large,
+                mostly uncompressed, and very data-intensive, so it is advised to view this website on a fast wi-fi
+                connection.)</p>
+        </div>
+        <!-- new collection post -->
+        <div class="post">
+            <table class="new">
+                <tr>
+                    <td class="image">
+                        <a href="{% url 'artmonitors:view_collection' coll_abbrev=newest_coll.abbrev %}">
+                            <img class="title" src="{% get_media_prefix %}/{{ newest_coll.summary }}"
+                                 align="left"
+                                 onload="newNoteHeight(this);">
+                        </a>
+                    </td>
+                    <td class="elsewise">
+                        <h1>
+                            <a href="{% url 'artmonitors:view_collection' coll_abbrev=newest_coll.abbrev %}">
+                                Newest Collection: {{ newest_coll.abbrev|upper }} - {{ newest_coll.name }}
+                            </a>
+                        </h1>
+                        <br>
+                        <h2>{{ last_monday_date }}</h2>
+                        <br>
+                        <p class="puretext">This week's new collection is {{ newest_coll.abbrev|upper }}. {{ newest_coll.description|safe }}</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- posts for impressive past works -->
+        {% for work in featured_works %}
+        <div class="post">
+            <h2><a href="{% url 'artmonitors:view_collection' coll_abbrev=work.collection.abbrev %}">
+                {{ work.collection.abbrev|upper }}
+            </a> > </h2>
+            <h1>
+                <a href="{% url 'artmonitors:view_work' coll_abbrev=work.collection.abbrev work_name=work.pagename %}">
+                    {{ work.name|upper }}
+                </a>
+            </h1>
+            <img class="work" src="{% get_media_prefix %}/{{ work.path }}" onload="setGoodHeight(this);"><br>
+            {% if work.description %}
+            <center><p class="puretext">{{ work.description|safe }}</p></center>
+            {% endif %}
+        </div>
+        {% endfor %}
+        </div>
+    <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+</div>
+</body>
+</html>

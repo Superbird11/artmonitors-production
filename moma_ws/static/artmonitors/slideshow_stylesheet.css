@@ -1,0 +1,74 @@
+body {
+	background-color: #000000;
+	background: #000000;
+	padding: 0;
+	margin: 0;
+}
+
+#slideDiv: {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	position: absolute;
+	padding: 0;
+	margin: 0;
+}
+
+#slide1Div: {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#slide2Div: {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.slide {
+	/*width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;*/
+	/*position: absolute;*/
+	top: 0;
+	left: 0;
+	position: absolute;
+	/*
+	position: relative;
+	margin: auto;
+	display: block;*/
+	/*top: 0;
+	left: 0;*/
+}
+
+.fsButton {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+
+.titleTable {
+	position: absolute;
+	width: 100%;
+	/*height: 1em%;*/
+	bottom: 0;
+	color: white;
+	background-color: #222222;
+	background: #222222;
+}
+
+.workNameTDC {
+	text-align: center;
+	font-family:"trebuchet ms", verdana, sans-serif;
+}
+
+table a:link {color:#FFFFFF; text-decoration:none;}
+table a:visited {color:#FFFFFF; text-decoration:none;}
+table a:hover {text-decoration:none;}

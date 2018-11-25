@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        {% load static %}
+		<link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+		<link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+		<meta http-equiv="Content-type" content="text/html;charset=utf-8">
+		<title>Contact Us - Monitors of Modern Art</title>
+	</head>
+	<body>
+		<div id="header">Monitors of Modern Art</div>
+		<div id="container">
+			<div id="menu">
+				{% include 'artmonitors/menu.html' %}
+			</div>
+			<div id="content">
+				<div class="puretext">
+					<h1>Contact Us</h1>
+					<p>If you'd like to communicate with MOMA for any reason, be it sharing your work,
+                        informing us of bugs in our website, guessing the title of a collection, or
+                        anything else, we invite you to write an E-mail to
+                        <a href="mailto:curator@artmonitors.com">curator@artmonitors.com</a>.</p>
+				</div>
+			</div>
+			<div id="footer">&copy Louis Jacobowitz 2018</div>
+		</div>
+	</body>
+</html>

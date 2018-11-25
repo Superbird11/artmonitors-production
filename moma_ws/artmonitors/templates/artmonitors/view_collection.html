@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+    <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>{{ coll.abbrev|upper }} - {{ coll.name }} - Monitors of Modern Art</title>
+    <script src="{% static 'artmonitors/set_height.js' %}"></script>
+</head>
+<body>
+<div id="header">Monitors of Modern Art</div>
+<div id="container">
+    <div id="menu">
+        {% include 'artmonitors/menu.html' %}
+    </div>
+    <div id="content">
+        <div class="post">
+            <h2><a href="{% url 'artmonitors:view_all_collections' %}">Collections</a> ></h2>
+            <h1>{{ coll.abbrev|upper }} - {{ coll.name }}</h1>
+            <h2>[
+                {% if prev_coll %}
+                    <a href="{% url 'artmonitors:view_collection' coll_abbrev=prev_coll.abbrev %}">Previous</a>
+                {% if next_coll %} / {% endif %}
+                {% endif %}
+                {% if next_coll %}
+                    <a href="{% url 'artmonitors:view_collection' coll_abbrev=next_coll.abbrev %}">Next</a>
+                {% endif %} ]</h2><br>
+
+            {% if coll.description %}
+                <center>
+                    <p class="puretext">
+                        {{ coll.description|safe }}
+                    </p>
+                </center>
+        </div>
+        <div class="post">
+            {% endif %}
+            <center>
+                <table>
+                    {% for group in work_groups %}
+                        <tr>
+                            {% for work in group %}
+                                <td>
+                                    <a href="{% url 'artmonitors:view_work' coll_abbrev=coll.abbrev work_name=work.pagename %}">
+                                        <img src="{% get_media_prefix %}/{{ work.thumbnail }}"><br>
+                                        <p>{{ work.name }}</p>
+                                    </a>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </center>
+        </div>
+    </div>
+    <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+</div>
+</body>
+</html>

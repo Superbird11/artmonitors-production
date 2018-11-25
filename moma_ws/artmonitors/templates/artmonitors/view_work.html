@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+    <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>{{ work.name }}</title>
+    <script src="{% static 'artmonitors/set_height.js' %}"></script>
+    <script>
+        window.addEventListener("resize", setGoodHeightForAll)
+    </script>
+</head>
+<body>
+<div id="fb-root"></div>
+<script src="{% static 'artmonitors/facebook_comments.js' %}"></script>
+<div id="header">Monitors of Modern Art</div>
+<div id="container">
+    <div id="menu">
+        {% include 'artmonitors/menu.html' %}
+    </div>
+    <div id="content">
+        <div class="post">
+            <h2><a href="{% url 'artmonitors:view_collection' coll_abbrev=collection.abbrev %}">
+                {{ collection.abbrev|upper }}
+            </a> ></h2>
+            <h1 id="work_title">{{ work.name|upper }}</h1>
+            <h2>[
+                {% if prev_work %}
+                <a href="{% url 'artmonitors:view_work' coll_abbrev=prev_work.collection.abbrev work_name=prev_work.pagename %}">
+                    Previous
+                </a>
+                {% if next_work %}/{% endif %}
+                {% endif %}
+                {% if next_work %}
+                <a href="{% url 'artmonitors:view_work' coll_abbrev=next_work.collection.abbrev work_name=next_work.pagename %}">
+                    Next
+                </a>
+                {% endif %}
+                ]</h2><br>
+            <img class="work" src="{% get_media_prefix %}/{{ work.path }}" onload="setGoodHeight(this); snapScrollToImage();"><br>
+            {% if work.description %}
+                <center><p class="puretext">{{ work.description|safe }}</p></center><br>
+            {% endif %}
+            <div class="fb-comments" data-href="{{ work.pagename }}.html" data-numposts="10"></div>
+        </div>
+    </div>
+    <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+</div>
+</body>
+</html>
