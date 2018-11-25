@@ -15,7 +15,7 @@
     </div>
     <div id="content">
         <div class="puretext">
-            <h1><u>Full Image Archive</u></h1>
+            <h1><u>Full Image Archive (Page {{ current_page }})</u></h1>
             <center>
                 <p class="puretext">This archive displays thumbnail images for every work ever published on this website, in order of most
                 recent, along with
@@ -24,11 +24,22 @@
                     href="{% url 'artmonitors:view_archive' %}">
                 our text-only archive</a>, or individually browse our <a
                     href="{% url 'artmonitors:view_all_collections' %}">
-                        collections</a> to see less images at once.</p> You can also view our <a
-                    href="{% url 'artmonitors:view_archive_page' page_num=1 %}">tabulated, page-based
-                archive</a>, which might be easier on your bandwidth.
+                        collections</a> to see less images at once.</p>
             </center>
         </div>
+
+        <div class="post">
+            <h2>View page ({{ works_per_page }} works per page):</h2><br>
+
+            {% for page in page_list %}
+            {% if page == current_page %}
+            {{ page }}
+            {% else %}
+            <a href="{% url 'artmonitors:view_archive_page' page_num=page %}">{{ page }}</a>
+            {% endif %}
+            {% endfor %}
+        </div>
+
         <div class="post">
             <br>
             <center>
@@ -47,6 +58,18 @@
                     {% endfor %}
                 </table>
             </center>
+        </div>
+
+        <div class="post">
+            <h2>View page ({{ works_per_page }} works per page):</h2><br>
+
+            {% for page in page_list %}
+            {% if page == current_page %}
+            {{ page }}
+            {% else %}
+            <a href="{% url 'artmonitors:view_archive_page' page_num=page %}">{{ page }}</a>
+            {% endif %}
+            {% endfor %}
         </div>
     </div>
     <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
