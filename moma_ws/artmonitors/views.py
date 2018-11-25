@@ -12,6 +12,7 @@ from Crypto.PublicKey import RSA
 import random
 import string
 import traceback
+import math
 import os
 import sys
 
@@ -157,6 +158,44 @@ def view_full_archive(request):
         'copyright_year': datetime.datetime.now().year
     }
     return django.shortcuts.render(request, 'artmonitors/archive_full.html', context)
+
+def view_archive_page(request, page_num):
+    """
+    Presents a view of the 'page_num'th 60 works in the archive.
+    """
+    # validate page_num is an integer and turn it into one
+    try:
+        current_page = int(page_num)
+    except ValueError:
+        return django.http.HttpResponseBadRequest()
+    page_num = current_page - 1
+
+    # get database objects for works
+    works = sorted(Work.objects.all())
+    works.reverse()
+
+    # filter works
+    works_per_page = 60
+    if page_num * works_per_page > len(works) or page_num < 0:
+        return django.http.Http404()
+    elif (page_num + 1) * works_per_page > len(works):
+        filtered_works = works[page_num * works_per_page:]
+    else:
+        filtered_works = works[page_num * works_per_page:(page_num + 1) * works_per_page]
+
+    # group filtered works together
+    work_groups = group_works(filtered_works, 3)
+    max_page_num = math.ceil(len(works) / works_per_page)
+
+    # build context
+    context = {
+        'works_per_page': works_per_page,
+        'current_page': current_page,
+        'page_list': range(1, max_page_num + 1),  # [1, 2, 3, 4, ..., max_page_num].
+        'work_groups': work_groups,
+        'copyright_year': datetime.datetime.now().year
+    }
+    return django.shortcuts.render(request, 'artmonitors/archive_page.html', context)
 
 
 def about_us(request):

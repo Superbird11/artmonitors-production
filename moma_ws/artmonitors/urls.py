@@ -19,6 +19,7 @@ urlpatterns = [
     # view archive
     path('archive',                                         views.view_archive,         name='view_archive'),
     path('archive/full',                                    views.view_full_archive,    name='view_full_archive'),
+    path(r'archive/<slug:page_num>',                        views.view_archive_page,    name='view_archive_page'),
     # view about page
     path('about',                                           views.about_us,             name='view_about'),
     # view contact page
