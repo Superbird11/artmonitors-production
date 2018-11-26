@@ -9,6 +9,7 @@ import datetime
 import json
 import base64
 from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
 import random
 import string
 import traceback
@@ -231,13 +232,18 @@ def add_collection(request):
     # declare decryption message for decryption
     def decrypt_message(encoded_encrypted_msg, private_key):
         # source: https://gist.github.com/syedrakib/241b68f5aeaefd7ef8e2
+        # decrypted = decryptor.decrypt(ast.literal_eval(str(encrypted)))
         decoded_encrypted_msg = base64.b64decode(encoded_encrypted_msg)
-        decoded_decrypted_msg = private_key.decrypt(decoded_encrypted_msg)
+        decryptor = PKCS1_OAEP.new(private_key)
+        decoded_decrypted_msg = decryptor.decrypt(decoded_encrypted_msg)
+        # decoded_decrypted_msg = private_key.decrypt(decoded_encrypted_msg)
         return decoded_decrypted_msg
 
     def encrypt_message(a_message, public_key):
         # source: https://gist.github.com/syedrakib/241b68f5aeaefd7ef8e2
-        encrypted_msg = public_key.encrypt(a_message, 32)[0]
+        encryptor = PKCS1_OAEP.new(public_key)
+        encrypted_msg = encryptor.encrypt(a_message)
+        # encrypted_msg = public_key.encrypt(a_message, 32)[0]
         encoded_encrypted_msg = base64.b64encode(encrypted_msg)  # base64 encoded strings are database friendly
         return encoded_encrypted_msg
 
