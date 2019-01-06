@@ -68,6 +68,10 @@ def view_collection(request, coll_abbrev):
     """
     # get regular database objects
     collection = django.shortcuts.get_object_or_404(Collection, abbrev=coll_abbrev)
+    debug_collection = django.shortcuts.get_object_or_404(Collection, abbrev='macc2')
+    print(collection)
+    print(debug_collection)
+
     # get prev and next collections
     try:
         prev_collection = Collection.objects.get(id=collection.id - 0.5)
@@ -84,7 +88,13 @@ def view_collection(request, coll_abbrev):
         except Collection.DoesNotExist:
             next_collection = None
     # get works, and group them appropriately
-    works = sorted(collection.work_set.all())
+    works = sorted(Work.objects.filter(collection=collection))
+    debug_works = sorted(Work.objects.filter(collection=debug_collection))
+
+    print(works)
+    print(debug_works)
+
+
     work_groups = group_works(works, 3)
     # build context
     context = {
@@ -316,10 +326,50 @@ def add_collection(request):
 
 
 def slideshow(request):
-    # TODO add functionality to choose type of slideshow
     all_works = [[str(work.name), os.path.join('/static/media', str(work.path)), str(work.pagename),
                   str(work.collection.abbrev)] for work in Work.objects.all()]
     context = {
         'work_list': json.dumps(all_works)
     }
     return django.shortcuts.render(request, 'artmonitors/slideshow.html', context)
+
+
+def slideshow_group(request, group_name):
+    context = {
+        'group_name': group_name
+    }
+    return django.shortcuts.render(request, 'artmonitors/slideshow_groups.html', context)
+
+
+def group(request):
+    collections = {c: group_works([w for w in Work.objects.filter(collection=c)], 3) for c in Collection.objects.all()}
+    collection_info = {str(c.id): {
+        'abbrev': str(c.abbrev),
+        'name': str(c.name),
+        'works': {
+            str(w.id): {
+                'name': str(w.name),
+                'path': str(w.path),
+                'filename': str(w.filename),
+                'pagename': str(w.pagename),
+                'thumbnail': str(w.thumbnail),
+                'selected': str(True),
+            } for w in Work.objects.filter(collection=c)
+        },
+    } for c in collections}
+    selected_collection = Collection.objects.get(id=1)
+    selected_works = collections[selected_collection]
+    # works = {c.id: group_works([w for w in Work.objects.filter(collection=c)], 3) for c in collections}
+
+    print(str(collection_info))
+
+    context = {
+        'copyright_year': str(datetime.datetime.now().year),
+        'collections': collections,
+        'collection_info': json.dumps(collection_info),
+        'selected_collection': selected_collection,
+        'selected_works': selected_works
+        # 'works': works
+    }
+    print(collections)
+    return django.shortcuts.render(request, 'artmonitors/group.html', context)

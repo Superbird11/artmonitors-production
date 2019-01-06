@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
+	<link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
+	<meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Groups - Monitors of Modern Art</title>
+    <script src="{% static 'artmonitors/group.js' %}"></script>
+    <script type="text/javascript">
+        var django_collections = JSON.parse("{{ collection_info }}".replace(/&quot;/g,"\"").replace(/&#39;/g, "'"));
+        var django_selected_collection = "1.0";
+    </script>
+</head>
+<body id="groups">
+    <div id="header">Monitors of Modern Art</div>
+    <div id="container">
+        <div id="menu">
+            {% include 'artmonitors/menu.html' %}
+        </div>
+        <div id="content">
+            <!-- information header -->
+            <div class="puretext">
+                <h1>Make Groups of Works</h1><br>
+                <p class="centeredtext">
+                    (If you just want to see the slideshow, and don't care about groups,
+                    <a href="{% url 'artmonitors:slideshow' %}">click here</a>).
+                </p>
+                <h2>Directions</h2><br>
+                <p class="indent">
+                    On this page, you can create groups of works, and then view a slideshow of only those works. If you
+                    really like a few specific works and only want to see those, then this is for you.
+                </p>
+                <p class="indent">
+                    First, select the works you want to include in your slideshow from the table below. Click on
+                    a work to select or deselect it (a work will be highlighted blue when it's selected, and its
+                    checkbox will be checked). You can click on one of the collections on the right to view the
+                    works in that collection, and select or deselect them however you want - the checkbox next to
+                    each collection will reflect how many works in that collection are selected.
+                </p>
+                <p class="indent">
+                    When you're done selecting your works, type a name for your collection into the text box and
+                    press the "Save" button. You can't save multiple groups with the same name, so be careful.
+                    After you've saved a group, it will appear in the "Your Groups" table - here, you can load that
+                    group back up at any time, remove that group, or view a slideshow of the works from that group.
+                </p>
+                <h2>Disclaimers</h2><br>
+                <p class="indent">
+                    This tool requires Javascript and uses your device's local storage. If you've disabled these
+                    features, this tool will not work properly.
+                </p>
+            </div>
+            <div class="puretext">
+                <h2>Your Groups</h2><br>
+                <table id="groupstable">
+                    <!-- dummy text to be filled in with javascript -->
+                </table>
+            </div>
+            <!-- div containing selection materials -->
+            <div class="post">
+                Name this group:
+                <input type="text"  id="name-text-field" value="">
+                <input type="button" id="save-group-button" value="Save this group" onclick="save_current_group();">
+                <table id="outertable"><tr>
+                    <td id="leftcell"><!-- left cell - for collection selection -->
+                        <div class="scrollbox">
+                            Select each collection (you can scroll down): <br>
+                            <input type="button" id="select-all-collections" class="selection-button" value="Select All Collections" onclick="select_all_collections();">
+                            <input type="button" id="select-none-collections" class="selection-button" value="Select None" onclick="select_no_collections();">
+                            <ul id="collectionlist">
+                            {% for coll in collections %}
+                                <li id="li-{{ coll.id }}" onclick="switch_collection('{{ coll.id }}');">
+                                    <input type="checkbox" checked id="cbox-coll-{{ coll.id }}" onclick="switch_collection('{{ coll.id }}'); return false;">
+                                    <div class="block">
+                                        {% if coll.id|floatformat:"1" == coll.id|floatformat:"-1" %}
+                                        {{ coll.id }}
+                                        {% else %}
+                                        {{ coll.id|floatformat:"0" }}
+                                        {% endif %}- {{ coll.abbrev|upper }} - {{ coll.name }}</div></li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </td>
+                    <td id="rightcell"><!-- right cell -->
+                        <div class="scrollbox">
+                            Collection:
+                            <span id="group-coll-abbrev">{{ selected_collection.abbrev|upper }}</span> -
+                            <span id="group-coll-name">{{ selected_collection.name }}</span> -
+                            <input type="button" id="select-all-works" class="selection-button" value="Select All Works" onclick="select_all_works();">
+                            <input type="button" id="select-none-works" class="selection-button" value="Select None" onclick="select_no_works();">
+                            <table id="innertable">
+                            {% for wrow in selected_works %}
+                                <tr>
+                                {% for work in wrow %}
+                                    <td id="td-{{ work.id }}" class="group-td" onclick="toggle_selection('{{ work.id }}');">
+                                        <img id="img-{{ work.id }}" class="group-img" src="{% get_media_prefix %}/{{ work.thumbnail }}">
+                                        <br>
+                                        <p>
+                                            <input type="checkbox" checked id="cbox-work-{{ work.id }}" onclick="toggle_selection('{{ work.id }}'); return false;">
+                                            {{ work.name }}
+                                        </p>
+                                    </td>
+                                {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </table>
+                        </div>
+                    </td>
+                </tr></table>
+            </div>
+            <script>
+                initialize_grouping("{% get_media_prefix %}");
+            </script>
+        </div>
+        <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>
+    </div>
+</body>
+</html>

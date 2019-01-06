@@ -223,7 +223,7 @@ p.indent {
 
 p.puretext {
     max-width: 800px;
-    margin: 0px auto;
+    margin: 0px 10px;
     padding: 10px;
     text-align: left;
     /*background-color: #DDDDDD;
@@ -295,4 +295,90 @@ div.puretext {
 	width: 100%;
 	height: 1.5em;
 	z-index:5;
+}
+
+/* for groups in particular */
+
+#groupstable {
+    width: 100%;
+}
+
+#groupstable td {
+    padding: 5px;
+}
+
+#outertable {
+    width: 1000px;
+}
+
+#outertable .selection-button {
+    margin: 5px;
+}
+
+#leftcell {
+    text-align: left;
+    padding: 10px;
+    width: 370px;
+}
+
+#leftcell ul {
+    list-style-type: none;
+    margin: 5px;
+    padding: 0px;
+}
+
+#leftcell li {
+    margin: 5px 0px;
+    background: #cccccc;
+    color: #000000;
+    text-decoration: none;
+}
+
+#leftcell li:hover {
+    color: #ff88ff;
+}
+
+#leftcell div.block {
+    display: inline;
+}
+
+#rightcell {
+    padding: 10px;
+}
+
+#innertable td {
+    background: #cccccc;
+    padding: 10px;
+    margin: 0px;
+}
+
+#innertable td.group-td {
+    background: #ccccee;
+}
+
+#innertable td img {
+    padding: 0px;
+    margin: 0px;
+}
+
+#innertable td p {
+    padding: 0px;
+    margin: 3px;
+}
+
+.scrollbox {
+    overflow-y: scroll;
+    height: 600px;
+}
+
+#outertable ::-webkit-scrollbar {
+    width: 10px;
+}
+
+#outertable ::-webkit-scrollbar-track {
+    background: #bbbbbb;
+}
+
+#outertable ::-webkit-scrollbar-thumb {
+    background: #888888;
 }

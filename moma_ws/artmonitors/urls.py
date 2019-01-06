@@ -26,6 +26,8 @@ urlpatterns = [
     path('contact',                                         views.contact_us,           name='view_contact'),
     # slideshow index
     path('slideshow',                                       views.slideshow,            name='slideshow'),
+    path('group',                                           views.group,                name='group'),
+    path('slideshow/<slug:group_name>',                     views.slideshow_group,      name='slideshow_group'),
 
     # admin add-collection page
     path('add_collection',                                  views.add_collection),

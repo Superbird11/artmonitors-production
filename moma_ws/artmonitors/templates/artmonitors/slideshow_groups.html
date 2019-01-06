@@ -6,11 +6,16 @@
 	<link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
 	<link href="{% static 'artmonitors/slideshow_stylesheet.css' %}" rel="stylesheet" type="text/css" >
     <script type="text/javascript">
-    	console.log("{{ work_list }}")
-        var django_raw = "{{ work_list }}".replace(/&quot;/g,"\"");
-        console.log("\n\n\n")
-        console.log(django_raw)
-        var django_inputs = JSON.parse(django_raw)
+        var group_name = "{{ group_name }}"
+        var local_storage = window.localStorage;
+        var saved_groups = JSON.parse(local_storage.getItem("saved_groups"));
+        var django_inputs = []
+        for(var entry in saved_groups) {
+            if(saved_groups[entry][0].replace(/[\s'"']/g, "_") == group_name) {
+                django_inputs = saved_groups[entry][1];
+                break;
+            }
+        }
     </script>
 
     <script src="{% static 'artmonitors/slideshow_code.js' %}"></script>
