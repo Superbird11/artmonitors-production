@@ -276,6 +276,18 @@ function load_group(group_name) {
 }
 
 
+function check_switch_collection(coll_id) {
+    switch_collection(coll_id);
+    var selected_checkbox = document.getElementById("cbox-coll-" + coll_id);
+    if(selected_checkbox.indeterminate || !selected_checkbox.checked) {
+        select_no_works_for_collection(coll_id);
+    }
+    else {
+        select_all_works_for_collection(coll_id);
+    }
+}
+
+
 function initialize_grouping(prefix) {
     collections = django_collections;
     selected_collection_id = django_selected_collection;

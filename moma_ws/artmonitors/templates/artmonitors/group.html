@@ -70,7 +70,7 @@
                             <ul id="collectionlist">
                             {% for coll in collections %}
                                 <li id="li-{{ coll.id }}" onclick="switch_collection('{{ coll.id }}');">
-                                    <input type="checkbox" checked id="cbox-coll-{{ coll.id }}" onclick="switch_collection('{{ coll.id }}'); return false;">
+                                    <input type="checkbox" checked id="cbox-coll-{{ coll.id }}" onclick="check_switch_collection('{{ coll.id }}');">
                                     <div class="block">
                                         {% if coll.id|floatformat:"1" == coll.id|floatformat:"-1" %}
                                         {{ coll.id }}
