@@ -234,10 +234,11 @@ function save_current_group() {
     var local_storage = window.localStorage;
     try {
         var saved_groups = JSON.parse(local_storage.getItem("saved_groups"));
+        saved_groups.push([group_name, selected_works]);
     } catch(e) {
         saved_groups = [];
+	saved_groups.push([group_name, selected_works]);
     }
-    saved_groups.push([group_name, selected_works]);
     local_storage.setItem("saved_groups", JSON.stringify(saved_groups));
     // update the group list
     update_group_list();
