@@ -272,6 +272,7 @@ function load_group(group_name) {
     }
     // prepare UI
     switch_collection(django_selected_collection);
+    document.getElementById("name-text-field").value = group_name;
 }
 
 
