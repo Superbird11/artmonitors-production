@@ -34,9 +34,7 @@ def index(request):
     # get featured works
     featured_works = random.sample(list(Work.objects.filter(featured=True)), 5)
     # get datetime of last monday
-    last_monday = datetime.date.today()
-    while last_monday.weekday() != 0:
-        last_monday -= datetime.timedelta(days=1)
+    last_monday = django_settings.LAST_UPDATE_DATE
     # prepare context
     context = {
         'newest_coll': newest_collection,
@@ -312,6 +310,9 @@ def add_collection(request):
         print("Failed: {}".format(invalid_reason))
         st_body = {'stacktrace': invalid_reason}
         return django.http.HttpResponse(status=400, content=json.dumps(st_body))
+
+    # after successful upload, change date internally
+    django_settings.LAST_UPDATE_DATE = datetime.date.today()
 
     # generate new random_key
     random_base64 = base64.encodebytes(bytes(''.join(random.choice(string.printable) for _ in range(256)), 'utf8'))

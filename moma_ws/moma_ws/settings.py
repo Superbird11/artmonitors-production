@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ SECRET_KEY = '0%jah4bv$9)me$(x+#t64*lm0oy33o+3c#2&3k70&oowz84vvl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '104.248.56.35', '206.189.252.183']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '104.248.56.35', 'localhost']
 
 
 # Application definition
@@ -82,6 +83,8 @@ DATABASES = {
     }
 }
 
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -115,18 +118,35 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Timekeeping
+
+LAST_UPDATE_DATE = datetime.date.today()
+while LAST_UPDATE_DATE.weekday() != 0:
+    LAST_UPDATE_DATE -= datetime.timedelta(days=1)
+
+
+# # Static files (CSS, JavaScript, Images)
+# # https://docs.djangoproject.com/en/2.1/howto/static-files/
+#
+# STATIC_URL = '/static/'  # os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = BASE_DIR + "/static/" # os.path.join(BASE_DIR, 'static')
+# # STATICFILES_DIRS = (os.path.join(STATIC_ROOT), )
+# DJANGO_STATIC_SAVE_PREFIX = os.path.join(os.path.dirname(os.getcwd()),)
+#
+# # Media files for artmonitors
+#
+# MEDIA_ROOT = STATIC_ROOT + "media/" # os.path.join(STATIC_ROOT, 'media/')  # 'static/media/'
+# MEDIA_URL = '/static/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'  # os.path.join(BASE_DIR, 'static')
-STATIC_ROOT = BASE_DIR + "/static/" # os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = (os.path.join(STATIC_ROOT), )
+STATIC_URL = '/static/'
+STATIC_ROOT = ''
+STATICFILES_DIRS = (os.path.join('static'), )
 DJANGO_STATIC_SAVE_PREFIX = os.path.join(os.path.dirname(os.getcwd()),)
 
 # Media files for artmonitors
 
-MEDIA_ROOT = STATIC_ROOT + "media/" # os.path.join(STATIC_ROOT, 'media/')  # 'static/media/'
+MEDIA_ROOT = 'static/media/'
 MEDIA_URL = '/static/media/'
-
-
