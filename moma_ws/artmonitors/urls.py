@@ -33,6 +33,9 @@ urlpatterns = [
     path('add_collection',                                  views.add_collection),
     path('projects/',                                        include('personal.urls')),
 
+    # test
+    path('last_update_date',                                views.get_last_update)
+
     # old paths/redirectors
     path('about.html',                                      views.about_us,             name='old_about'),
     path('contact.html',                                    views.contact_us,           name='old_contact'),

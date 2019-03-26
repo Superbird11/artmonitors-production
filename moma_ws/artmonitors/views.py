@@ -45,6 +45,10 @@ def index(request):
     return django.shortcuts.render(request, 'artmonitors/index.html', context)
 
 
+def get_last_update(request):
+    return str(django_settings.LAST_UPDATE_DATE)
+
+
 def view_all_collections(request):
     """
     Presents a view of all collections' abbreviations and names, in a list
