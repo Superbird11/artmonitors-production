@@ -6,7 +6,7 @@ involved in the Add Collection/Work process
 from PIL import Image
 from .models import Collection, Work
 from django.conf import settings
-from django.template import Context, Template
+from django.template import Context, Template, TemplateSyntaxError
 import os
 import numpy
 import imageio
@@ -149,8 +149,8 @@ def create_collection(data):
 
     # arrange appropriate media URLs
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    media_root = settings.MEDIA_ROOT.lstrip('/')
-    media_url = os.path.join(base_dir, media_root)
+    media_root = settings.MEDIA_ROOT  # .lstrip('/')
+    media_url = media_root # os.path.join(base_dir, media_root)
     temp_url = os.path.join(media_url, 'temp')
     artmonitors_url = os.path.join(media_url, 'artmonitors')
     summaries_url = os.path.join(artmonitors_url, 'summaries')
@@ -220,7 +220,12 @@ def create_collection(data):
     parsed_description = re.sub(r'{{work:(.+?):(.+?)}}',
                                 """<a href="{% url 'artmonitors:view_work' coll_abbrev='""" + collection_abbrev + r"""' work_name='\1' %}">\2</a>""",
                                 parsed_description)
-    parsed_desc_template = Template(parsed_description)
+
+    try:
+        parsed_desc_template = Template(parsed_description)
+    except TemplateSyntaxError as e:
+        return "Failed\n" + parsed_description + str(e)
+
     final_parsed_description = parsed_desc_template.render(Context({}))
 
     print("Finished parsing collection description")

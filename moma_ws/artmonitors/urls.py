@@ -34,7 +34,7 @@ urlpatterns = [
     path('projects/',                                        include('personal.urls')),
 
     # test
-    path('last_update_date',                                views.get_last_update)
+    path('last_update_date',                                views.get_last_update,     name='last_update'),
 
     # old paths/redirectors
     path('about.html',                                      views.about_us,             name='old_about'),
