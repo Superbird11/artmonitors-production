@@ -5,13 +5,11 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'artmonitors/favicon.ico' %}"/>
     <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
     <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <title>{{ work.name }}</title>
     <script src="{% static 'artmonitors/set_height.js' %}"></script>
-    <script>
-        window.addEventListener("resize", setGoodHeightForAll)
-    </script>
 </head>
-<body>
+<body onload="snapScrollToImage();">
 <div id="fb-root"></div>
 <script src="{% static 'artmonitors/facebook_comments.js' %}"></script>
 <div id="header">Monitors of Modern Art</div>
@@ -38,7 +36,7 @@
                 </a>
                 {% endif %}
                 ]</h2><br>
-            <img class="work" src="{% get_media_prefix %}/{{ work.path }}" onload="setGoodHeight(this); snapScrollToImage();"><br>
+            <div class="imgcenter"><img class="work" src="{% get_media_prefix %}/{{ work.path }}"><br></div>
             {% if work.description %}
                 <center><p class="puretext">{{ work.description|safe }}</p></center><br>
             {% endif %}

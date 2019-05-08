@@ -9,9 +9,9 @@
     <meta name="Description"
           content="An art gallery featuring all sorts of unique and colorful abstract art, compiled here for your viewing pleasure.">
     <script src="{% static 'artmonitors/set_height.js' %}"></script>
-    <script>
+   <!-- <script>
         window.addEventListener("resize", setGoodHeightForAll)
-    </script>
+    </script>-->
 </head>
 <body>
 <div id="header">Monitors of Modern Art</div>
@@ -67,7 +67,7 @@
                     {{ work.name|upper }}
                 </a>
             </h1>
-            <img class="work" src="{% get_media_prefix %}/{{ work.path }}" onload="setGoodHeight(this);"><br>
+            <div class="imgcenter"><img class="work" src="{% get_media_prefix %}/{{ work.path }}"><br></div>
             {% if work.description %}
             <center><p class="puretext">{{ work.description|safe }}</p></center>
             {% endif %}

@@ -244,8 +244,8 @@ div.puretext {
 
 .post img {
 	padding: 0/* 10px*/;
-	margin: 10px 20px;
-	text-align:left;
+	margin: 10px 10px;
+	text-align:center;
 	position: relative;
 	/*width: 80vw;*/
 
@@ -256,6 +256,16 @@ div.puretext {
 
 .post img.title {
 	width: 500px;
+}
+
+.post img.work {
+    font-size:24pt; /* same font size as h1, which is the biggest title element. Used to calculate em */
+    max-width: calc(100vw - 80px);  /* exactly enough to account for horizontal margins/padding */
+    max-height: calc(100vh - 2em);  /* leave space for title but otherwise fill window */
+}
+
+.imgcenter {
+    text-align: center;
 }
 
 .smallimage {
