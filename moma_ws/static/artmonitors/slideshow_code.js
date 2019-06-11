@@ -197,10 +197,12 @@ var fadeInInterval;
 
 // Increments the opacity of element by amt, until cap
 function incrementOpacity( element, amt, cap ) {
+	/*
 	if ( !isActive ) {
 	// only do stuff while user is looking
 		return;
 	}
+	*/
 
 	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
 	currentOpacity = currentOpacity + amt;
@@ -233,10 +235,12 @@ var fadeOutInterval;
 
 // Decrements the opacity of element by amt, until cap
 function decrementOpacity( element, amt, cap ) {
+	/*
 	if ( !isActive ) {
 	// only do stuff while user is looking
 		return;
 	}
+	*/
 
 	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
 	currentOpacity = currentOpacity - amt;
