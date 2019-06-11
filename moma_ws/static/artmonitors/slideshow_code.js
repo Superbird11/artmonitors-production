@@ -293,10 +293,12 @@ var csvArray;
 var interval;
 
 function changeImage() {
+    /*
 	if ( !isActive ) {
 	// only do stuff while user is looking
 		return;
 	}
+	*/
 	// Slow down the repetition of changing images to a reasonable speed.
 	if ( interval ) {
 		self.clearInterval(interval);
