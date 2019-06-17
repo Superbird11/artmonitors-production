@@ -197,12 +197,10 @@ var fadeInInterval;
 
 // Increments the opacity of element by amt, until cap
 function incrementOpacity( element, amt, cap ) {
-	/*
 	if ( !isActive ) {
 	// only do stuff while user is looking
 		return;
 	}
-	*/
 
 	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
 	currentOpacity = currentOpacity + amt;
@@ -235,12 +233,10 @@ var fadeOutInterval;
 
 // Decrements the opacity of element by amt, until cap
 function decrementOpacity( element, amt, cap ) {
-	/*
 	if ( !isActive ) {
 	// only do stuff while user is looking
 		return;
 	}
-	*/
 
 	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
 	currentOpacity = currentOpacity - amt;
@@ -293,12 +289,10 @@ var csvArray;
 var interval;
 
 function changeImage() {
-    /*
 	if ( !isActive ) {
 	// only do stuff while user is looking
 		return;
 	}
-	*/
 	// Slow down the repetition of changing images to a reasonable speed.
 	if ( interval ) {
 		self.clearInterval(interval);
@@ -306,7 +300,7 @@ function changeImage() {
 		self.setInterval( changeImage, 9001 );
 	}
 
-	console.log( "Hello, World! #" + debugN );
+	//onsole.log( "Hello, World! #" + debugN );
 	debugN = debugN + 1;
 
 	// Rotate images.
@@ -349,10 +343,36 @@ function changeImage() {
 	nameDiv.innerHTML = "\n\t\t\t\t\t\t<a href=\"collections/" + frontColl + "/" + frontPath +  "\">" + frontName + "</a>\n\t\t\t\t\t";
 }
 
+
+//////////////////////////////////////
+// VISIBILITY CHANGE CODE
+//////////////////////////////////////
+// Set the name of the hidden property and the change event for visibility
+var hidden, visibilityChange;
+if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+  hidden = "hidden";
+  visibilityChange = "visibilitychange";
+} else if (typeof document.msHidden !== "undefined") {
+  hidden = "msHidden";
+  visibilityChange = "msvisibilitychange";
+} else if (typeof document.webkitHidden !== "undefined") {
+  hidden = "webkitHidden";
+  visibilityChange = "webkitvisibilitychange";
+}
+
+function toggleIsActive() {
+    console.log("Hidden: " + document[hidden]);
+    if(document[hidden]) {
+        isActive = false;
+    } else {
+        isActive = true;
+    }
+    console.log("Active: " + isActive);
+}
+
 //////////////////////////////////////
 // INITIALIZATION CODE
 //////////////////////////////////////
-
 // Initialize the frontImage and backImage variables
 function initSlideshow() {
 	// Initialize front and back images
@@ -387,13 +407,14 @@ function initSlideshow() {
     frontImage.src = frontSrc;
     resizeForSlideshow( frontImage );
 
-    interval = self.setInterval( changeImage, 1000 )
+    interval = self.setInterval( changeImage, 1000 );
 
 	// Set instance methods
-	window.onfocus = function() { isActive = true; };
-	window.onblur = function() { isActive = false; };
-	document.addEventListener( "fullscreenchange", toggleFullscreenButton );
-	document.addEventListener( "webkitfullscreenchange", toggleFullscreenButton );
-	document.addEventListener( "mozfullscreenchange", toggleFullscreenButton );
-	document.addEventListener( "MSFullscreenChange", toggleFullscreenButton );
+    document.addEventListener( visibilityChange, toggleIsActive);
+	window.onfocus = toggleIsActive //function() { isActive = true; };
+	window.onblur = toggleIsActive //function() { isActive = false; };
+    document.addEventListener( "fullscreenchange", toggleFullscreenButton );
+    document.addEventListener( "webkitfullscreenchange", toggleFullscreenButton );
+    document.addEventListener( "mozfullscreenchange", toggleFullscreenButton );
+    document.addEventListener( "MSFullscreenChange", toggleFullscreenButton );
 }
