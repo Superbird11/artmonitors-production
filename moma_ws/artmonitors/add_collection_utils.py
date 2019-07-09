@@ -123,6 +123,12 @@ def create_collection(data):
             errors.append("- Collection name must not be empty/null.")
         if not d['works'] or len(d['works']) == 0:
             errors.append("- Given collection has no works.")
+        try:
+            if Collection.objects.get(abbrev=d['abbrev'].lower()):
+                errors.append("- Collection Abbreviation already exists!")
+        except Collection.DoesNotExist:
+            print("New collection doesn't seem to exist yet. This is good.")
+
         work_ct = 0
         for w in d['works']:
             work_ct += 1
@@ -211,13 +217,13 @@ def create_collection(data):
     print("Finished creating summary .gif for collection")
 
     # Parse collection description
-    parsed_description = re.sub(r'{{collection:(.+?):(.+?)}}',
+    parsed_description = re.sub(r'{{collection:([A-Za-z0-9_-]+?):(.+?)}}',
                                 r'''<a href="{% url 'artmonitors:view_collection' coll_abbrev='\1' %}">\2</a>''',
                                 collection_description)
-    parsed_description = re.sub(r'{{work:(.+?)/(.+?):(.+?)}}',
+    parsed_description = re.sub(r'{{work:([A-Za-z0-9_-]+?)/[A-Za-z0-9_-]:(.+?)}}',
                                 r'''<a href="{% url 'artmonitors:view_work' coll_abbrev='\1' work_name='\2' %}">\3</a>''',
                                 parsed_description)
-    parsed_description = re.sub(r'{{work:(.+?):(.+?)}}',
+    parsed_description = re.sub(r'{{work:[A-Za-z0-9_-]:(.+?)}}',
                                 """<a href="{% url 'artmonitors:view_work' coll_abbrev='""" + collection_abbrev + r"""' work_name='\1' %}">\2</a>""",
                                 parsed_description)
 
@@ -251,13 +257,13 @@ def create_collection(data):
         work_path = w['file_path']
         work_thumbnail = w['thumbnail_path']
         if w['description']:
-            work_description = re.sub(r'{{collection:(.+?):(.+?)}}',
+            work_description = re.sub(r'{{collection:[A-Za-z0-9_-]:(.+?)}}',
                                       r'''<a href="{% url 'artmonitors:view_collection' coll_abbrev='\1' %}">\2</a>''',
                                       w['description'])
-            work_description = re.sub(r'{{work:(.+?)/(.+?):(.+?)}}',
+            work_description = re.sub(r'{{work:[A-Za-z0-9_-]/[A-Za-z0-9_-]:(.+?)}}',
                                       r'''<a href="{% url 'artmonitors:view_work' coll_abbrev='\1' work_name='\2' %}">\3</a>''',
                                       work_description)
-            work_description = re.sub(r'{{work:(.+?):(.+?)}}',
+            work_description = re.sub(r'{{work:[A-Za-z0-9_-]:[A-Za-z0-9_-]}}',
                                       """<a href="{% url 'artmonitors:view_work' coll_abbrev='""" + collection_abbrev + r"""' work_name='\1' %}">\2</a>""",
                                       work_description)
             work_desc_template = Template(work_description)
