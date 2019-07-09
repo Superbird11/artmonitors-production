@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0%jah4bv$9)me$(x+#t64*lm0oy33o+3c#2&3k70&oowz84vvl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # True
+DEBUG = False
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '104.248.56.35', '206.189.252.183', 'localhost']
 
@@ -136,3 +136,6 @@ DJANGO_STATIC_SAVE_PREFIX = os.path.join(os.path.dirname(os.getcwd()),)
 
 MEDIA_ROOT = STATIC_ROOT + "media/"
 MEDIA_URL = '/static/media/'
+
+FILE_UPLOAD_PERMISSIONS = 0o644
+
