@@ -220,10 +220,10 @@ def create_collection(data):
     parsed_description = re.sub(r'{{collection:([A-Za-z0-9_-]+?):(.+?)}}',
                                 r'''<a href="{% url 'artmonitors:view_collection' coll_abbrev='\1' %}">\2</a>''',
                                 collection_description)
-    parsed_description = re.sub(r'{{work:([A-Za-z0-9_-]+?)/[A-Za-z0-9_-]:(.+?)}}',
+    parsed_description = re.sub(r'{{work:([A-Za-z0-9_-]+?)/([A-Za-z0-9_-]):(.+?)}}',
                                 r'''<a href="{% url 'artmonitors:view_work' coll_abbrev='\1' work_name='\2' %}">\3</a>''',
                                 parsed_description)
-    parsed_description = re.sub(r'{{work:[A-Za-z0-9_-]:(.+?)}}',
+    parsed_description = re.sub(r'{{work:([A-Za-z0-9_-]):(.+?)}}',
                                 """<a href="{% url 'artmonitors:view_work' coll_abbrev='""" + collection_abbrev + r"""' work_name='\1' %}">\2</a>""",
                                 parsed_description)
 
@@ -257,13 +257,13 @@ def create_collection(data):
         work_path = w['file_path']
         work_thumbnail = w['thumbnail_path']
         if w['description']:
-            work_description = re.sub(r'{{collection:[A-Za-z0-9_-]:(.+?)}}',
+            work_description = re.sub(r'{{collection:([A-Za-z0-9_-]):(.+?)}}',
                                       r'''<a href="{% url 'artmonitors:view_collection' coll_abbrev='\1' %}">\2</a>''',
                                       w['description'])
-            work_description = re.sub(r'{{work:[A-Za-z0-9_-]/[A-Za-z0-9_-]:(.+?)}}',
+            work_description = re.sub(r'{{work:([A-Za-z0-9_-])/([A-Za-z0-9_-]):(.+?)}}',
                                       r'''<a href="{% url 'artmonitors:view_work' coll_abbrev='\1' work_name='\2' %}">\3</a>''',
                                       work_description)
-            work_description = re.sub(r'{{work:[A-Za-z0-9_-]:[A-Za-z0-9_-]}}',
+            work_description = re.sub(r'{{work:([A-Za-z0-9_-]):([A-Za-z0-9_-])}}',
                                       """<a href="{% url 'artmonitors:view_work' coll_abbrev='""" + collection_abbrev + r"""' work_name='\1' %}">\2</a>""",
                                       work_description)
             work_desc_template = Template(work_description)
