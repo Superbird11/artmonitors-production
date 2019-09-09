@@ -220,7 +220,7 @@ def create_collection(data):
     parsed_description = re.sub(r'{{collection:(.+?):(.+?)}}',
                                 r'''<a href="{% url 'artmonitors:view_collection' coll_abbrev='\1' %}">\2</a>''',
                                 collection_description)
-    parsed_description = re.sub(r'{{work:(.+?)/(.+?):(.+?)}}',
+    parsed_description = re.sub(r'{{other:(.+?):(.+?):(.+?)}}',
                                 r'''<a href="{% url 'artmonitors:view_work' coll_abbrev='\1' work_name='\2' %}">\3</a>''',
                                 parsed_description)
     parsed_description = re.sub(r'{{work:(.+?):(.+?)}}',
@@ -253,14 +253,19 @@ def create_collection(data):
     for w in data['works']:
         work_name = w['name']
         work_filename = w['filename']
-        work_pagename = re.sub(r'[^\x00-\x7f]', r'', work_name.lower().replace(' ', '-').replace(',', '').replace("'", ''))
+        work_pagename = re.sub(r'[^\x00-\x7f]', r'', work_name.lower()
+                               .replace(' ', '-')
+                               .replace(',', '')
+                               .replace("'", '')
+                               .replace('.', '')
+                               )
         work_path = w['file_path']
         work_thumbnail = w['thumbnail_path']
         if w['description']:
             work_description = re.sub(r'{{collection:(.+?):(.+?)}}',
                                       r'''<a href="{% url 'artmonitors:view_collection' coll_abbrev='\1' %}">\2</a>''',
                                       w['description'])
-            work_description = re.sub(r'{{work:(.+?)/(.+?):(.+?)}}',
+            work_description = re.sub(r'{{other:(.+?):(.+?):(.+?)}}',
                                       r'''<a href="{% url 'artmonitors:view_work' coll_abbrev='\1' work_name='\2' %}">\3</a>''',
                                       work_description)
             work_description = re.sub(r'{{work:(.+?):(.+?)}}',
