@@ -1,6 +1,6 @@
 # definitely necessary
 Django>=2.2.5
-Pillow==5.2.0
+Pillow==6.2.0
 djangorestframework==3.8.2
 imageio==2.3.0
 numpy==1.15.1
