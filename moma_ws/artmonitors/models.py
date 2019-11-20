@@ -100,3 +100,31 @@ class Work(models.Model):
 
     """ A boolean deciding whether or not this work is able to be featured on the front page """
     featured = models.BooleanField(default=False)
+
+
+class TemplateCollection(models.Model):
+    """
+    A structure representing a Collection yet to be uploaded.
+    an abbreviation, a full name, and a description
+    """
+
+    def __str__(self):
+        return "Template - {0} - {1}".format(str(self.abbrev).upper(), str(self.name))
+
+    def __lt__(self, other):
+        return self.id < other.id
+
+    """ A primary key ID """
+    id = models.FloatField(primary_key=True, blank=True)
+
+    """ A three-to-six-character collection abbreviation, e.g. "macs" """
+    abbrev = models.CharField('abbreviation', max_length=10, default=None, editable=False)
+
+    """ An expanded name of the collection, e.g. "Modern Art Color Study" """
+    name = models.CharField(max_length=100, default=None, editable=False)
+
+    """ A description of this collection. Can be null. """
+    description = models.TextField(null=True, blank=True, default=None, editable=False)
+
+    """ The JSON data that was part of this request. """
+    json_data = models.TextField(editable=True)
