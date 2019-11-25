@@ -109,7 +109,7 @@ class TemplateCollection(models.Model):
     """
 
     def __str__(self):
-        return "Template - {0} - {1}".format(str(self.abbrev).upper(), str(self.name))
+        return "{0} - Template - {1} - {2}".format(self.id, str(self.abbrev).upper(), str(self.name))
 
     def __lt__(self, other):
         return self.id < other.id
@@ -127,4 +127,4 @@ class TemplateCollection(models.Model):
     description = models.TextField(null=True, blank=True, default=None, editable=False)
 
     """ The JSON data that was part of this request. """
-    json_data = models.TextField(editable=True)
+    json_data = models.TextField(editable=False)

@@ -4,14 +4,18 @@ involved in the Add Collection/Work process
 """
 
 from PIL import Image
-from .models import Collection, Work
+from .models import Collection, Work, TemplateCollection
 from django.conf import settings
 from django.template import Context, Template, TemplateSyntaxError
+import moma_ws.settings as django_settings
 import os
 import numpy
 import imageio
 import re
 import base64
+import json
+import datetime
+import copy
 
 
 def create_summary_gif(image_list, filename, width=300, duration=2):
@@ -81,7 +85,7 @@ def create_thumbnail(img, max_width=400.0, max_height=300.0):
     return resized_img
 
 
-def create_collection(data):
+def create_collection(data, dry=False):
     """
     Given an appropriately-formatted REST request, creates a new collection accordingly.
     The appropriate JSON format of the request is:
@@ -109,7 +113,9 @@ def create_collection(data):
     }         
 
     :param data: a JSON dict formatted as above
+    :param dry: if True, don't actually save anything to the database - just test for errors.
     :return: None if successful, or a string containing an error message if something went wrong.
+             If dry-running, returns the created (not saved) collection object.
     """
     def validate_add_request(d):
         """
@@ -125,8 +131,14 @@ def create_collection(data):
             errors.append("- Given collection has no works.")
         try:
             if Collection.objects.get(abbrev=d['abbrev'].lower()):
-                errors.append("- Collection Abbreviation already exists!")
+                errors.append("- Collection Abbreviation is already in use by another collection!")
         except Collection.DoesNotExist:
+            pass
+        try:
+            # additionally, check to make sure the new abbrev does not conflict with a queued collection
+            if TemplateCollection.objects.get(abbrev=d['abbrev'].lower()):
+                errors.append("- Collection Abbreviation is taken by a yet-to-be-uploaded collection.")
+        except TemplateCollection.DoesNotExist:
             print("New collection doesn't seem to exist yet. This is good.")
 
         work_ct = 0
@@ -142,6 +154,8 @@ def create_collection(data):
                 errors.append("- Work with index #{} must not have empty/null image data.".format(work_ct))
         return errors
     #
+    if dry:
+        data = copy.deepcopy(data)
 
     validation_errors = validate_add_request(data)
     if len(validation_errors) > 0:
@@ -181,36 +195,38 @@ def create_collection(data):
 
     # save raw images to folder
     for w in data['works']:
-        with open(os.path.join(temp_url, w['filename']), 'wb') as temp_img_file:
+        wfilename = os.path.join(temp_url, w['filename']) if not dry else f'/tmp/{w["filename"]}'
+        with open(wfilename, 'wb') as temp_img_file:
             base64_img = bytes(w['img'], 'utf8')
             raw_img = base64.decodebytes(base64_img)
             temp_img_file.write(raw_img)
-        w['pil_image'] = Image.open(os.path.join(temp_url, w['filename']))
-
+        w['pil_image'] = Image.open(wfilename)
     print("Finished saving images to temp folder and loading images")
 
     # copy all images to the works folder (thus preserving original image format)
-    if not os.path.isdir(works_url):
+    if not os.path.isdir(works_url) and not dry:
         os.mkdir(works_url)
     for w in data['works']:
         w['file_path'] = os.path.join('artmonitors', 'works', collection_abbrev, w['filename'])
-        os.rename(os.path.join(temp_url, w['filename']), os.path.join(works_url, w['filename']))
-
+        if not dry:
+            os.rename(os.path.join(temp_url, w['filename']), os.path.join(works_url, w['filename']))
     print("Finished relocating images to works folder")
 
     # get and save thumbnails for each image
     for w in data['works']:
         w['thumbnail'] = create_thumbnail(w['pil_image'])
         w['thumbnail_path'] = os.path.join('artmonitors', 'thumbnails', collection_abbrev, w['filename'])
-        thumbnail_path = os.path.join(thumbnails_url, w['filename'])
-        if not os.path.isdir(thumbnails_url):
-            os.makedirs(thumbnails_url)
-        w['thumbnail'].save(thumbnail_path, 'JPEG')
-
+        thumbnail_path = os.path.join(thumbnails_url, w['filename']) if not dry else os.devnull
+        if not dry:
+            if not os.path.isdir(thumbnails_url):
+                os.makedirs(thumbnails_url)
+            w['thumbnail'].save(thumbnail_path, 'JPEG')
     print("Finished creating thumbnails for each image")
 
     # create and save summary image
-    summary_img_abs_url = os.path.join(summaries_url, collection_abbrev + ".gif")
+    # if dryrunning, save to /tmp/. Can't use /dev/null for some reason, it gives an error.
+    # Has to be titled '.gif', apparently
+    summary_img_abs_url = os.path.join(summaries_url, collection_abbrev + ".gif") if not dry else '/tmp/summary.gif'
     summary_img_url = os.path.join('artmonitors', 'summaries', collection_abbrev + '.gif')
     create_summary_gif([w['pil_image'] for w in data['works']], summary_img_abs_url)
 
@@ -242,11 +258,12 @@ def create_collection(data):
         abbrev=collection_abbrev,
         name=collection_name,
         description=final_parsed_description,
-        summary=summary_img_url
+        summary=summary_img_url,
     )
-    collection.save()
 
-    print("Finished saving new Collection object")
+    if not dry:
+        collection.save()
+        print("Finished saving new Collection object")
 
     last_work_id = Work.objects.latest('id').id + 1
 
@@ -288,10 +305,58 @@ def create_collection(data):
             thumbnail=work_thumbnail,
             featured=False
         )
-        work.save()
+        if not dry:
+            work.save()
         last_work_id += 1
 
-        print("  Finished saving work {} with ID {} and path {}".format(work_name, work_id, work_path))
-    print("Finished saving new Work objects")
-    
+        if not dry:
+            print("  Finished saving work {} with ID {} and path {}".format(work_name, work_id, work_path))
+    if not dry:
+        print("Finished saving new Work objects")
+        django_settings.LAST_UPDATE_DATE = datetime.date.today()
+        return None
+    else:
+        print("Finished test-running")
+        return collection
+
+
+def preload_collection(data):
+    """
+    Loads a new collection's information into the TemplateCollection table,
+    after dry-running an attempt to add it to the actual database.
+    :return: the same failure string as the preload if False, or None if true.
+    """
+    # dry-run the create_collection routine, make sure it works
+    collection = create_collection(data, dry=True)
+    # if there was an error, propagate that error message
+    if type(collection) != Collection:
+        return collection
+    # create and add a new TemplateCollection
+    last_template_id = TemplateCollection.objects.latest("id").id + 1 if TemplateCollection.objects.count() > 0 \
+        else Collection.objects.latest("id").id
+    template = TemplateCollection(
+        id=last_template_id,
+        abbrev=collection.abbrev,
+        name=collection.name,
+        description=collection.description,
+        json_data=json.dumps(data),
+    )
+    template.save()
+    # and return success
     return None
+
+
+def unload_collection():
+    """
+    Retrieves the earliest collection in the TemplateCollection table,
+    and actually adds it as a collection.
+    :return: None if everything goes smoothly. Otherwise, whatever create_collection() returns.
+    """
+    template = TemplateCollection.objects.earliest("id")
+    data = json.loads(template.json_data)
+    template.delete()
+    return create_collection(data, dry=False)
+
+
+
+

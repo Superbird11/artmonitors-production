@@ -31,10 +31,12 @@ urlpatterns = [
 
     # admin add-collection page
     path('add_collection',                                  views.add_collection),
-    path('projects/',                                        include('personal.urls')),
+    path('preload_collection',                              views.preload_collection),
+    path('upload_preloaded',                              views.upload_preloaded_collection),
+    path('projects/',                                       include('personal.urls')),
 
     # test
-    path('last_update_date',                                views.get_last_update,     name='last_update'),
+    path('last_update_date',                                views.get_last_update,      name='last_update'),
 
     # old paths/redirectors
     path('about.html',                                      views.about_us,             name='old_about'),
