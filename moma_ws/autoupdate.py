@@ -49,7 +49,7 @@ if __name__ == "__main__":
     data = {"key": key.decode("utf-8")}
 
     # prepare request
-    url = sys.argv[1] if len(sys.argv) >= 2 else "https://localhost/uploaded_preloaded"
+    url = sys.argv[1] if len(sys.argv) >= 2 else "https://artmonitors.com/upload_preloaded"
     with open('artmonitors/keys/upload_preload_permissions', 'r') as auth_file:
         auth_components = auth_file.read().split('\n')
         auth = (auth_components[0], auth_components[1])
