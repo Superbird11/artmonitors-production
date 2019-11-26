@@ -333,7 +333,7 @@ def preload_collection(data):
         return collection
     # create and add a new TemplateCollection
     last_template_id = TemplateCollection.objects.latest("id").id + 1 if TemplateCollection.objects.count() > 0 \
-        else Collection.objects.latest("id").id
+        else Collection.objects.latest("id").id + 1
     template = TemplateCollection(
         id=last_template_id,
         abbrev=collection.abbrev,
