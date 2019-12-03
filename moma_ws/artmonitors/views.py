@@ -471,43 +471,43 @@ def upload_preloaded_collection(request):
     def sendmail_email(msg):
         # http://www.yak.net/fqa/84.html
         sendmail_location = "/usr/sbin/sendmail"
-        sendmail = os.popen(f"{sendmail_location} -t", 'w')
+        sendmail = os.popen("{} -t".format(sendmail_location), 'w')
         sendmail.write(msg)
         status = sendmail.close()
-        print(f"Sent the following email with sendmail, status {status}:")
+        print("Sent the following email with sendmail, status {}:".format(status))
         print(msg)
 
     def email_about_error(errortext):
         # write email
-        sendmail_email(f"""To: curator@artmonitors.com
+        sendmail_email("""To: curator@artmonitors.com
 From: autoupload@artmonitors.com
-Subject: [UPLOAD ERROR] Upload pre-loaded collection failed ({datetime.datetime.now()})
+Subject: [UPLOAD ERROR] Upload pre-loaded collection failed ({})
 
 Hello curator,
 
 The upload for the first pre-loaded collection failed with the following error text:
 
-{errortext}
+{}
 
 Thank you,
 -Webservice.moma_ws.artmonitors
-""")
+""".format(datetime.datetime.now(), errortext))
 
     def email_about_success():
         collection_name = Collection.objects.latest("id").abbrev
-        sendmail_email(f"""To: curator@artmonitors.com
+        sendmail_email("""To: curator@artmonitors.com
 From: autoupload@artmonitors.com
-Subject: [UPLOAD SUCCESS] Upload pre-loaded collection {collection_name} succeeded ({datetime.datetime.now()})
+Subject: [UPLOAD SUCCESS] Upload pre-loaded collection {} succeeded ({})
 
 Hello curator,
 
-A new collection ({collection_name}) has been uploaded automatically. Please view it at
+A new collection ({}) has been uploaded automatically. Please view it at
     https://artmonitors.com
 at your convenience, just to make sure nothing went wrong.
 
 Thank you,
 -Webservice.moma_ws.artmonitors
-""")
+""".format(collection_name, datetime.datetime.now(), collection_name))
         # msg['Subject'] = "[UPLOAD SUCCESS] Upload pre-loaded collection failed"
         # msg['From'] = "autoupload@artmonitors.com"
         # msg['To'] = "curator@artmonitors.com"
