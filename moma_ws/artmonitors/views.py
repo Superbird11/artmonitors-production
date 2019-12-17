@@ -19,7 +19,7 @@ import sys
 import smtplib, email
 
 import moma_ws.settings as django_settings
-from .models import Collection, Work, group_works
+from .models import Collection, TemplateCollection, Work, group_works
 from .add_collection_utils import create_collection, \
     preload_collection as core_preload_collection, unload_collection as core_unload_collection
 
@@ -495,6 +495,7 @@ Thank you,
 
     def email_about_success():
         collection_name = Collection.objects.latest("id").abbrev
+        preloaded_collections_left = TemplateCollection.objects.count()
         sendmail_email("""To: curator@artmonitors.com
 From: autoupload@artmonitors.com
 Subject: [UPLOAD SUCCESS] Upload pre-loaded collection {} succeeded ({})
@@ -505,9 +506,11 @@ A new collection ({}) has been uploaded automatically. Please view it at
     https://artmonitors.com
 at your convenience, just to make sure nothing went wrong.
 
+There are {} pre-loaded collections remaining.
+
 Thank you,
 -Webservice.moma_ws.artmonitors
-""".format(collection_name, datetime.datetime.now(), collection_name))
+""".format(collection_name, datetime.datetime.now(), collection_name, preloaded_collections_left))
         # msg['Subject'] = "[UPLOAD SUCCESS] Upload pre-loaded collection failed"
         # msg['From'] = "autoupload@artmonitors.com"
         # msg['To'] = "curator@artmonitors.com"
