@@ -539,6 +539,10 @@ Thank you,
         email_about_error("Failed, and the template collection was probably deleted: \n{}".format(
             traceback.format_exc()))
     else:
-        email_about_success()
+        try:
+            email_about_success()
+        except Exception as f:
+            email_about_error("Upload succeeded, but sending the success email failed: \n{}".format(
+                traceback.format_exc()))
     return response_with_new_key('artmonitors/keys/upload_preload_rsa_key.pub', 'artmonitors/keys/upload_preload_random_key')
 
