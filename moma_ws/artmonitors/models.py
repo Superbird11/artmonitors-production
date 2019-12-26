@@ -114,6 +114,13 @@ class TemplateCollection(models.Model):
     def __lt__(self, other):
         return self.id < other.id
 
+    def get_queryset(self, request):
+        # https://stackoverflow.com/questions/34774028/how-to-ignore-loading-huge-fields-in-django-admin-list-display
+        qs = super(TemplateCollection, self).get_queryset(request)
+        # tell Django to not retrieve json_data field from DB
+        qs = qs.defer('json_data')
+        return qs
+
     """ A primary key ID """
     id = models.FloatField(primary_key=True, blank=True)
 
