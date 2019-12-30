@@ -510,7 +510,7 @@ There are {} pre-loaded collections remaining.
 
 Thank you,
 -Webservice.moma_ws.artmonitors
-""".format(collection_name, datetime.datetime.now(), collection_name, preloaded_collections_left))
+""".format(collection_name.upper(), datetime.datetime.now(), collection_name.upper(), preloaded_collections_left))
         # msg['Subject'] = "[UPLOAD SUCCESS] Upload pre-loaded collection failed"
         # msg['From'] = "autoupload@artmonitors.com"
         # msg['To'] = "curator@artmonitors.com"
