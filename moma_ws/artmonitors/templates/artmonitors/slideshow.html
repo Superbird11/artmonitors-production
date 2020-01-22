@@ -7,7 +7,7 @@
 	<link href="{% static 'artmonitors/slideshow_stylesheet.css' %}" rel="stylesheet" type="text/css" >
     <script type="text/javascript">
     	console.log("{{ work_list }}")
-        var django_raw = "{{ work_list }}".replace(/&quot;/g,"\"");
+        var django_raw = "{{ work_list }}".replace(/&#39;/g, "'").replace(/&quot;/g,"\"");
         console.log("\n\n\n")
         console.log(django_raw)
         var django_inputs = JSON.parse(django_raw)
