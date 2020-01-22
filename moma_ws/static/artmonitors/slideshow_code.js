@@ -361,13 +361,13 @@ if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and 
 }
 
 function toggleIsActive() {
-    console.log("Hidden: " + document[hidden]);
+    // console.log("Hidden: " + document[hidden]);
     if(document[hidden]) {
         isActive = false;
     } else {
         isActive = true;
     }
-    console.log("Active: " + isActive);
+    // console.log("Active: " + isActive);
 }
 
 //////////////////////////////////////
