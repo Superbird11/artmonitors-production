@@ -19,7 +19,7 @@ moma_ws/artmonitors/migrations/*
 moma_ws/personal/migrations/*
 
 # raw data - should not be committed, can be recreated on a platform-by-platform basis
-moma_ws/db.sqlite
+moma_ws/db.sqlite3
 moma_ws/static/collections.csv
 moma_ws/static/works.csv
 moma_ws/static/media
