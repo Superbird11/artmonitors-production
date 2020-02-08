@@ -1,83 +1,3 @@
-// Resizes an image for a slideshow.
-// See ../setHeight.js for a similar process
-function resizeForSlideshow( imgToResize ) {
-	// Get size of usable area for slideshow
-	var usableWidth = window.innerWidth;
-	var titleTable = document.getElementById( "descTable" );
-	var windowHeight = window.innerHeight;
-	var tableHeight = titleTable.offsetHeight;
-	var usableHeight = windowHeight - tableHeight;
-
-	// Resize containing div
-	var slideDiv = document.getElementById( "slideDiv" );
-	slideDiv.setAttribute( "style", "height:" + usableHeight + "px;" );
-
-	// Get size of native image to be displayed
-	var nativeWidth = imgToResize.naturalWidth;
-	var nativeHeight = imgToResize.naturalHeight;
-
-	// Determine width-to-height ratios of those two
-	var windowRatio = usableWidth / usableHeight;
-	var imageRatio = nativeWidth / nativeHeight;
-
-	var parentNode = imgToResize.parentNode;
-
-	if ( imageRatio > windowRatio ) {
-		// image's width-to-height is greater than window
-		// image should be set to 100% width, less height
-		var newWidth = usableWidth;
-		var newHeight = usableWidth * ( nativeHeight / nativeWidth );
-
-		imgToResize.width = newWidth;
-		imgToResize.height = newHeight;
-
-		imgToResize.defWidth = newWidth;
-		imgToResize.defHeight = newHeight;
-
-		// resize and relocate image's container accordingly
-		//parentNode.style.width = newWidth;
-		//parentNode.style.height = newHeight;
-		//parentNode.setAttribute( "style", "width:" + newWidth + "px;" );
-		//parentNode.setAttribute( "style", "height:" + newHeight + "px;" );
-
-		var newTop = ( usableHeight - imgToResize.height ) / 2;
-		//parentNode.setAttribute( "style", "left:0;" );
-		//parentNode.setAttribute( "style", "top:" + newTop + "px;" );
-		imgToResize.style.left = 0;
-		imgToResize.style.top = newTop + "px";
-
-		imgToResize.defLeft = 0;
-		imgToResize.defTop = newTop;
-	}
-	else {
-		// image's width-to-height is less than window
-		// image should be set to 100% height, less width
-		var newWidth = usableHeight * ( nativeWidth / nativeHeight );
-		var newHeight = usableHeight;
-
-		imgToResize.height = newHeight;
-		imgToResize.width = newWidth;
-
-		imgToResize.defWidth = newWidth;
-		imgToResize.defHeight = newHeight;
-
-		// resize and relocate image's container accordingly
-		//parentNode.setAttribute( "style", "width:" + newWidth + "px;" );
-		//parentNode.setAttribute( "style", "height:" + newHeight + "px;" );
-
-		// relocate image accordingly
-		var newLeft = ( usableWidth - imgToResize.width ) / 2;
-		/*parentNode.setAttribute( "style", "top:0;" );
-		parentNode.setAttribute( "style", "left:" + newLeft + "px;" );*/
-		imgToResize.style.top = 0;
-		imgToResize.style.left = newLeft + "px";
-
-		imgToResize.defLeft = newLeft;
-		imgToResize.defTop = 0;
-
-	}
-}
-
 // ref: http://stackoverflow.com/a/1293163/2343
 // This will parse a delimited string into an array of
 // arrays. The default delimiter is the comma, but this
@@ -158,7 +78,7 @@ function goFullscreen() {
 		else if (html.webkitRequestFullscreen) { html.webkitRequestFullscreen(); }
 		else if (html.mozRequestFullScreen) { html.mozRequestFullScreen(); }
 		else if (html.msRequestFullscreen) { html.msRequestFullscreen(); }
-	}
+    }
 }
 
 function exitFullscreen() {
@@ -166,99 +86,26 @@ function exitFullscreen() {
 	if (document.exitFullscreen) { document.exitFullscreen(); }
 	else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
 	else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); }
-	else if (document.msExitFullscreen) { document.msExitFullscreen(); }
+    else if (document.msExitFullscreen) { document.msExitFullscreen(); }
 }
 
 function toggleFullscreenButton() {
 	// To be activated when entering or leaving fullscreen
 	// changes the button text to match
-	var fullscreenDiv = document.getElementById( "fullscreen" );
+	var fullscreenButton = document.getElementById("fullscreenButton");
 
 	// are we full-screen?
 	if ( document.fullscreenElement || document.webkitFullscreenElement ||
 			document.mozFullScreenElement || document.msFullscreenElement ) {
 		// If so, change the button to an exit-fullscreen button
-		fullscreenDiv.innerHTML = "\n\t\t<button id=\"exitFullscreenButton\" class=\"fsButton\" type=\"button\" onclick=\"exitFullscreen();\">Exit Fullscreen</button>\n\t";
+		fullscreenButton.innerHTML = "Exit Fullscreen";
+		fullscreenButton.onclick = exitFullscreen;
 	}
 	else {
 		// Otherwise change the button to an enter-fullscreen button
-		fullscreenDiv.innerHTML = "\n\t\t<button id=\"fullscreenButton\" class=\"fsButton\" type=\"button\" onclick=\"goFullscreen();\">Go Fullscreen</button>\n\t";
-	}
-}
-
-
-//////////////////////////////////////
-// IMAGE TO FADE IN CODE
-//////////////////////////////////////
-var isActive = true;
-
-var fadeInCt = 0;
-var fadeInInterval;
-
-// Increments the opacity of element by amt, until cap
-function incrementOpacity( element, amt, cap ) {
-	if ( !isActive ) {
-	// only do stuff while user is looking
-		return;
-	}
-
-	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
-	currentOpacity = currentOpacity + amt;
-	element.style.opacity = currentOpacity;
-
-	fadeInCt = fadeInCt + 1;
-
-	if ( fadeInCt >= cap ) {
-		element.style.opacity = 1;
-		clearInterval( fadeInInterval );
-	}
-}
-
-// Calls incrementOpacity to fill the specified interval.
-function fadeIn( element, interval ) {
-	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
-	fadeInCt = 0;
-	if ( currentOpacity < 1 ) {
-		cap = interval / 10.0;
-		amt = 1.0 / cap;
-		fadeInInterval = setInterval( incrementOpacity, 10, element, amt, cap );
-	}
-}
-
-//////////////////////////////////////
-// IMAGE TO FADE OUT CODE
-//////////////////////////////////////
-var fadeOutCt = 0;
-var fadeOutInterval;
-
-// Decrements the opacity of element by amt, until cap
-function decrementOpacity( element, amt, cap ) {
-	if ( !isActive ) {
-	// only do stuff while user is looking
-		return;
-	}
-
-	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
-	currentOpacity = currentOpacity - amt;
-	element.style.opacity = currentOpacity;
-
-	fadeOutCt = fadeOutCt + 1;
-
-	if ( fadeOutCt >= cap ) {
-		element.style.opacity = 0;
-		clearInterval( fadeOutInterval );
-	}
-}
-
-// Calls decrementOpacity to fill the specified interval.
-function fadeOut( element, interval ) {
-	var currentOpacity = Number( window.getComputedStyle( element ).getPropertyValue( "opacity" ) );
-	fadeOutCt = 0;
-	if ( currentOpacity > 0 ) {
-		cap = interval / 10.0;
-		amt = 1.0 / cap;
-		fadeOutInterval = setInterval( decrementOpacity, 10, element, amt, cap );
-	}
+	    fullscreenButton.innerHTML = "Go Fullscreen";
+		fullscreenButton.onclick = goFullscreen;
+    }
 }
 
 //////////////////////////////////////
@@ -289,10 +136,6 @@ var csvArray;
 var interval;
 
 function changeImage() {
-	if ( !isActive ) {
-	// only do stuff while user is looking
-		return;
-	}
 	// Slow down the repetition of changing images to a reasonable speed.
 	if ( interval ) {
 		self.clearInterval(interval);
@@ -321,12 +164,7 @@ function changeImage() {
 	backSrc = csvArray[ ri ][ 1 ];
 	backPath = csvArray[ ri ][ 2 ];
 	backColl = csvArray[ ri ][ 3 ];
-	backImage.src = backSrc;
-
-	// Resize appropriately, and redundantly
-	resizeForSlideshow( frontImage );
-	resizeForSlideshow( afterImage );
-	resizeForSlideshow( backImage );
+	backImage.style.backgroundImage = "url('" + backSrc + "')";
 
 	// set proper placement
 	frontImage.style.zIndex = 1;
@@ -334,40 +172,11 @@ function changeImage() {
 	afterImage.style.zIndex = 0;
 
 	// Fade in and out
-	frontImage.style.opacity = 0; // going to fade in
-	afterImage.style.opacity = 1; // going to fade out
-	fadeIn( frontImage, 1000 );
-	fadeOut( afterImage, 1000 );
+	frontImage.style.opacity = 1; // CSS will fade in automatically
+	afterImage.style.opacity = 0; // CSS will fade out automatically
 
 	// Change text
-	nameDiv.innerHTML = "\n\t\t\t\t\t\t<a href=\"collections/" + frontColl + "/" + frontPath +  "\">" + frontName + "</a>\n\t\t\t\t\t";
-}
-
-
-//////////////////////////////////////
-// VISIBILITY CHANGE CODE
-//////////////////////////////////////
-// Set the name of the hidden property and the change event for visibility
-var hidden, visibilityChange;
-if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
-  hidden = "hidden";
-  visibilityChange = "visibilitychange";
-} else if (typeof document.msHidden !== "undefined") {
-  hidden = "msHidden";
-  visibilityChange = "msvisibilitychange";
-} else if (typeof document.webkitHidden !== "undefined") {
-  hidden = "webkitHidden";
-  visibilityChange = "webkitvisibilitychange";
-}
-
-function toggleIsActive() {
-    // console.log("Hidden: " + document[hidden]);
-    if(document[hidden]) {
-        isActive = false;
-    } else {
-        isActive = true;
-    }
-    // console.log("Active: " + isActive);
+	nameDiv.innerHTML = "<a href=\"collections/" + frontColl + "/" + frontPath +  "\">" + frontName + "</a>";
 }
 
 //////////////////////////////////////
@@ -396,23 +205,18 @@ function initSlideshow() {
 	backSrc = csvArray[ ri ][ 1 ];
 	backPath = csvArray[ ri ][ 2 ];
 	backColl = csvArray[ ri ][ 3 ];
-	backImage.src = backSrc
-	resizeForSlideshow( backImage )
+	backImage.style.backgroundImage = "url('" + backSrc + "')"
 
 	var ri = Math.floor( Math.random() * csvArray.length );
     frontName = csvArray[ ri ][ 0 ];
     frontSrc = csvArray[ ri ][ 1 ];
     frontPath = csvArray[ ri ][ 2 ];
     frontColl = csvArray[ ri ][ 3 ];
-    frontImage.src = frontSrc;
-    resizeForSlideshow( frontImage );
+    frontImage.style.backgroundImage = "url('" + frontSrc + "')"
 
     interval = self.setInterval( changeImage, 1000 );
 
 	// Set instance methods
-    document.addEventListener( visibilityChange, toggleIsActive);
-	window.onfocus = toggleIsActive //function() { isActive = true; };
-	window.onblur = toggleIsActive //function() { isActive = false; };
     document.addEventListener( "fullscreenchange", toggleFullscreenButton );
     document.addEventListener( "webkitfullscreenchange", toggleFullscreenButton );
     document.addEventListener( "mozfullscreenchange", toggleFullscreenButton );
