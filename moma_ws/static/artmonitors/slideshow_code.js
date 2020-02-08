@@ -128,7 +128,7 @@ var backColl;
 
 var afterImage;
 
-var nameDiv;
+var nameLink;
 
 var csvText;
 var csvArray;
@@ -137,13 +137,12 @@ var interval;
 
 function changeImage() {
 	// Slow down the repetition of changing images to a reasonable speed.
-	if ( interval ) {
-		self.clearInterval(interval);
-		interval = null;
-		self.setInterval( changeImage, 9001 );
-	}
+//	if ( interval ) {
+//		self.clearInterval(interval);
+//		interval = null;
+//		self.setInterval( changeImage, 9001 );
+//	}
 
-	//onsole.log( "Hello, World! #" + debugN );
 	debugN = debugN + 1;
 
 	// Rotate images.
@@ -164,7 +163,7 @@ function changeImage() {
 	backSrc = csvArray[ ri ][ 1 ];
 	backPath = csvArray[ ri ][ 2 ];
 	backColl = csvArray[ ri ][ 3 ];
-	backImage.style.backgroundImage = "url('" + backSrc + "')";
+	backImage.style.backgroundImage = "url(\"" + backSrc + "\")";
 
 	// set proper placement
 	frontImage.style.zIndex = 1;
@@ -176,7 +175,9 @@ function changeImage() {
 	afterImage.style.opacity = 0; // CSS will fade out automatically
 
 	// Change text
-	nameDiv.innerHTML = "<a href=\"collections/" + frontColl + "/" + frontPath +  "\">" + frontName + "</a>";
+	nameLink.href = "/collections/" + frontColl + "/" + frontPath;
+	nameLink.innerHTML = frontName;
+	console.log(frontSrc);
 }
 
 //////////////////////////////////////
@@ -194,10 +195,10 @@ function initSlideshow() {
 	afterImage.style.opacity = 0.0;
 
 	// Initialize the text box
-	nameDiv = document.getElementById( "workName" );
+	nameLink = document.getElementById("workLink");
 
     // retrieve array of all works currently in gallery
-    csvArray = django_inputs
+    csvArray = django_inputs;
 
     // prepare back image and front image
     var ri = Math.floor( Math.random() * csvArray.length );
@@ -205,20 +206,21 @@ function initSlideshow() {
 	backSrc = csvArray[ ri ][ 1 ];
 	backPath = csvArray[ ri ][ 2 ];
 	backColl = csvArray[ ri ][ 3 ];
-	backImage.style.backgroundImage = "url('" + backSrc + "')"
+	backImage.style.backgroundImage = "url(\"" + backSrc + "\")";
 
 	var ri = Math.floor( Math.random() * csvArray.length );
     frontName = csvArray[ ri ][ 0 ];
     frontSrc = csvArray[ ri ][ 1 ];
     frontPath = csvArray[ ri ][ 2 ];
     frontColl = csvArray[ ri ][ 3 ];
-    frontImage.style.backgroundImage = "url('" + frontSrc + "')"
-
-    interval = self.setInterval( changeImage, 1000 );
+    frontImage.style.backgroundImage = "url(\"" + frontSrc + "\")";
 
 	// Set instance methods
     document.addEventListener( "fullscreenchange", toggleFullscreenButton );
     document.addEventListener( "webkitfullscreenchange", toggleFullscreenButton );
     document.addEventListener( "mozfullscreenchange", toggleFullscreenButton );
     document.addEventListener( "MSFullscreenChange", toggleFullscreenButton );
+
+    setInterval(changeImage, 9001);
+    changeImage();
 }
