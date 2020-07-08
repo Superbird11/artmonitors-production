@@ -6,8 +6,12 @@
     <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
     <meta http-equiv="Content-type" content="text/html;charset=utf-8">
     <title>Monitors of Modern Art</title>
-    <meta name="Description"
-          content="An art gallery featuring all sorts of unique and colorful abstract art, compiled here for your viewing pleasure.">
+    <meta name="Description" content="An art gallery featuring all sorts of unique and colorful abstract art, compiled here for your viewing pleasure.">
+    <meta property="og:description" content="An art gallery featuring all sorts of unique and colorful abstract art, compiled here for your viewing pleasure.">
+    <meta property="og:title" content="Monitors of Modern Art" />
+    <meta property="og:image" content="{% get_media_prefix %}/{{ featured_works.1.path }}" />
+    <meta property="og:site_name" content="https://artmonitors.com" />
+
     <script src="{% static 'artmonitors/set_height.js' %}"></script>
    <!-- <script>
         window.addEventListener("resize", setGoodHeightForAll)
