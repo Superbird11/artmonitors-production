@@ -6,6 +6,7 @@
     <link href="{% static 'artmonitors/artmonitors_stylesheet.css' %}" rel="stylesheet" type="text/css">
     <meta http-equiv="Content-type" content="text/html;charset=utf-8">
     <meta property="og:title" content="Collection {{ coll.abbrev|upper }} - Monitors of Modern Art" />
+    <meta property="og:description" content="See all the works in {{ coll.abbrev | upper }}: {{ coll.name }}. {{ coll.description|safe }}" />
     <meta property="og:site_name" content="https://artmonitors.com" />
     <title>{{ coll.abbrev|upper }} - {{ coll.name }} - Monitors of Modern Art</title>
     <script src="{% static 'artmonitors/set_height.js' %}"></script>
