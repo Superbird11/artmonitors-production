@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '104.248.56.35', 'localhost']
 INSTALLED_APPS = [
     'artmonitors.apps.ArtmonitorsConfig',
     'personal.apps.PersonalConfig',
-    'wordcount.apps.WordcountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,6 +148,5 @@ DJANGO_STATIC_SAVE_PREFIX = os.path.join(os.path.dirname(os.getcwd()),)
 
 # Media files for artmonitors
 
-MEDIA_ROOT = '/Users/Birdy/Documents/Programming/HTML/app/Webservice/moma_ws/static/media/'
-# os.path.join(os.getcwd(), os.pardir, 'static', 'media')
-MEDIA_URL = '/Users/Birdy/Documents/Programming/HTML/app/Webservice/moma_ws/static/media/' # 'static/media/'
+MEDIA_ROOT = 'static/media/'
+MEDIA_URL = '/static/media/'

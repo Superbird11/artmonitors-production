@@ -21,5 +21,6 @@ from django.urls import include, path, re_path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('personal/', include('personal.urls'), name='personal'),
+    path('wordcount/', include('wordcount.urls'), name='wordcount-api'),
     path('', include('artmonitors.urls'))
 ]

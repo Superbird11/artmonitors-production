@@ -1,19 +1,19 @@
 # definitely necessary
-Django>=2.2.5
-Pillow==5.2.0
+Django==2.2.5
+Pillow>=5.2.0
 djangorestframework==3.8.2
 imageio==2.3.0
-numpy==1.15.1
+numpy>=1.15.1
 pycryptodome==3.7.0
 pytz==2018.5
 setuptools==39.1.0
-requests==2.20.1
+requests>=2.20.1
 
 # probably important but I'm not sure exactly what they do in this project
 six==1.11.0
 idna==2.7
 pycparser==2.18
-cffi==1.11.5
+cffi>=1.11.5
 asn1crypto==0.24.0
-cryptography==2.3.1
+cryptography>=2.3.1
 
