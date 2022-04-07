@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '104.248.56.35', '206.189.252.183', 'lo
 INSTALLED_APPS = [
     'artmonitors.apps.ArtmonitorsConfig',
     'personal.apps.PersonalConfig',
+    'wordcount.apps.WordcountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
