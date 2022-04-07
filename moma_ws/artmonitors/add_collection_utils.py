@@ -276,6 +276,7 @@ def create_collection(data, dry=False):
                                .replace("'", '')
                                .replace('.', '')
                                .replace('/', '')
+                               .replace('!', '')
                                )
         work_path = w['file_path']
         work_thumbnail = w['thumbnail_path']
