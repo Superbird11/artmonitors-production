@@ -2,6 +2,7 @@ import instagrapi as ig
 from instagrapi.exceptions import LoginRequired
 import sqlite3
 import os
+import re
 import pathlib
 # import authenticator
 
@@ -89,7 +90,7 @@ if __name__ == '__main__':
                     FROM artmonitors_work AS w
                     INNER JOIN artmonitors_collection AS c
                         ON w.collection_id = c.id
-                    WHERE ig IS NULL
+                    WHERE ig IS NULL AND w.id < 1400
                     ORDER BY RANDOM()
                     LIMIT 1;
             """)
@@ -98,11 +99,13 @@ if __name__ == '__main__':
             if work_is_not_on_blacklist(pagename, coll):
                 break
         work_path = pathlib.Path(MEDIA_ROOT, partial_path)
+        if description is not None:
+            description = re.sub(r'<a href="([^"]*)">(?:[^<]*)</a>', r'https://artmonitors.com\1', description)
         desc_parts = [
             name,
             description,
             f"https://artmonitors.com/collections/{coll}/{pagename}",
-            f"#artmonitors #{coll}{' #featured' if featured else ''}"
+            f"#artmonitors #{coll} #{pagename.replace('-', '_')}{' #featured' if featured else ''}"
         ]
         work_desc = " \n- ".join(token for token in desc_parts if token)
 
@@ -142,6 +145,7 @@ if __name__ == '__main__':
                 SET ig = ?
                 WHERE id = ?
         """, (post_code, work_id))
+        db.commit()
         if not successful_update:
             raise ValueError(
                 f"Failed to upload work {workdata} with instagram code {post_code}")
@@ -153,3 +157,4 @@ if __name__ == '__main__':
         print(f"Failed to upload to instagram: {workdata}")
         print(error_msg)
         email_about_error(workdata, error_msg)
+
