@@ -23,6 +23,7 @@
     </div>
     <div id="content">
         <div class="post">
+            <div class="headerline">
             <h2><a href="{% url 'artmonitors:view_collection' coll_abbrev=collection.abbrev %}">
                 {{ collection.abbrev|upper }}
             </a> ></h2>
@@ -39,12 +40,24 @@
                     Next
                 </a>
                 {% endif %}
-                ]</h2><br>
+                ]
+            </h2>
+            {% if work.ig %}
+            <h2 class="right">
+                [
+                <a href="https://www.instagram.com/p/{{ work.ig }}">
+                    <img class="ig" src="{% static 'artmonitors/Instagram_Glyph_Gradient_RGB.svg' %}"></a>
+                <a href="https://www.instagram.com/p/{{ work.ig }}">View on Instagram</a>
+                ]
+            </h2>
+            {%endif%}
+            </div>
+            <br>
             <div class="imgcenter"><img class="work" src="{% get_media_prefix %}/{{ work.path }}"><br></div>
             {% if work.description %}
                 <center><p class="puretext">{{ work.description|safe }}</p></center><br>
             {% endif %}
-            <div class="fb-comments" data-href="{{ work.pagename }}.html" data-numposts="10"></div>
+            <!-- <div class="fb-comments" data-href="{{ work.pagename }}.html" data-numposts="10"></div> -->
         </div>
     </div>
     <div id="footer">&copy Louis Jacobowitz {{ copyright_year }}</div>

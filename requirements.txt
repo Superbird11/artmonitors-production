@@ -8,6 +8,7 @@ pycryptodome==3.7.0
 pytz==2018.5
 setuptools==39.1.0
 requests>=2.20.1
+instagrapi
 
 # probably important but I'm not sure exactly what they do in this project
 six==1.11.0

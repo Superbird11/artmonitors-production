@@ -101,6 +101,9 @@ class Work(models.Model):
     """ A boolean deciding whether or not this work is able to be featured on the front page """
     featured = models.BooleanField(default=False)
 
+    """ Instagram link / post ID """
+    ig = models.CharField(max_length=255, null=True, blank=True, default=None)
+
 
 class TemplateCollection(models.Model):
     """

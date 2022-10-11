@@ -16,11 +16,17 @@ h1 {
 }
 
 h2 {
-	padding: 0;
-	margin: 0px .25em;
-	font-size: 10pt;
-	display: inline;
-	text-align:left;
+    padding: 0;
+    margin: auto .25em .5em .25em;
+    font-size: 10pt;
+    display: inline;
+    text-align: left;
+    margin-top: auto;
+}
+
+h2.right {
+    text-align: right;
+    flex-grow: 1;
 }
 
 h3 {
@@ -46,10 +52,23 @@ img.thumbnail {
 	padding:5px;
 }
 
+img.ig, .post img.ig  {
+    width: 1.1em;
+    vertical-align: bottom;
+    margin: 0;
+    padding: 0;
+}
+
 .post img.title {
 	position: static;
 	display: inline;
 	margin: 10px 50px 10px 10px;
+}
+
+.post .headerline {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 table {
