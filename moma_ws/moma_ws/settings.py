@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0%jah4bv$9)me$(x+#t64*lm0oy33o+3c#2&3k70&oowz84vvl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '104.248.56.35', 'localhost']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', '104.248.56.35', '206.189.252.183', 'localhost']
 
 
 # Application definition
@@ -143,12 +143,16 @@ while LAST_UPDATE_DATE.weekday() != 0:
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = ''
-STATICFILES_DIRS = (os.path.join('static'), )
+STATIC_ROOT = BASE_DIR + "/static/"
+# STATICFILES_DIRS = (os.path.join('static'), )
 DJANGO_STATIC_SAVE_PREFIX = os.path.join(os.path.dirname(os.getcwd()),)
 
 # Media files for artmonitors
 
-MEDIA_ROOT = '/Users/Birdy/Documents/Programming/HTML/app/Webservice/moma_ws/static/media/'
+# MEDIA_ROOT = '/Users/Birdy/Documents/Programming/HTML/app/Webservice/moma_ws/static/media/'
+MEDIA_ROOT = STATIC_ROOT + "media/"
 # os.path.join(os.getcwd(), os.pardir, 'static', 'media')
-MEDIA_URL = '/Users/Birdy/Documents/Programming/HTML/app/Webservice/moma_ws/static/media/' # 'static/media/'
+# MEDIA_URL = '/Users/Birdy/Documents/Programming/HTML/app/Webservice/moma_ws/static/media/' # 'static/media/'
+MEDIA_URL = '/static/media/'
+FILE_UPLOAD_PERMISSIONS = 0o644
+
